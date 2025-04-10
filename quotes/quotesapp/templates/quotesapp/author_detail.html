@@ -1,0 +1,19 @@
+{% extends "quotesapp/base.html" %}
+{% load extract_authors %}
+
+{% block content %}
+<h2>{{ author|authors }}</h2>
+
+{% if author.born_date or author.born_location %}
+    <p><strong>Born:</strong>
+        {% if author.born_date %}{{ author.born_date }}{% endif %}
+        {% if author.born_date and author.born_location %} in {% endif %}
+        {% if author.born_location %}{{ author.born_location }}{% endif %}
+    </p>
+{% endif %}
+
+{% if author.description %}
+<p><strong>Biography:</strong> {{ author.description }}</p>
+{% endif %}
+
+{% endblock %}
