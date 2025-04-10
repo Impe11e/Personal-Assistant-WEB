@@ -5,4 +5,5 @@ app_name = 'pers_assist_app'
 
 urlpatterns = [
     path('', views.main, name='main'),
+    path('contact/', views.contact, name='contact'),
 ]
