@@ -16,7 +16,7 @@
     {% for contact in contacts %}
     <ul>
         <li>
-            <a href="{% url 'pers_assist_app:contact_detail' contact.id %}" role="button" class="outline"> {{ contact.name }} </a>
+            <a href="{% url 'pers_assist_app:contact_detail' contact.id %}" role="button" class="outline"> {{ contact.name }} {{ contact.surname }} </a>
             <a href="{% url 'pers_assist_app:contact_delete' contact.id %}" role="button" class="contrast"> Delete contact </a>
         </li>
     </ul>

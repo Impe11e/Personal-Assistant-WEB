@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<form method="POST" action="{% url 'pers_assist_app:contact_create' %}">
+<form method="POST"
+      action="{% url 'pers_assist_app:contact_create' %}">
     {% csrf_token %}
 
     <div style="padding: 10px">
