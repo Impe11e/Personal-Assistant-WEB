@@ -1,0 +1,28 @@
+{% extends "pers_assist_app/base.html" %}
+{% block content %}
+
+<h1>
+  {{ contact.name }}{% if contact.surname %} {{ contact.surname }}{% endif %}
+</h1>
+
+{% if contact.address %}
+<p><strong>Address:</strong> <b>{{ contact.address }}</b></p>
+{% endif %}
+
+{% if contact.phone %}
+<p><strong>Phone:</strong> <kbd>{{ contact.phone }}</kbd></p>
+{% endif %}
+
+{% if contact.email %}
+<p><strong>Email:</strong> <kbd>{{ contact.email }}</kbd></p>
+{% endif %}
+
+{% if contact.birthday %}
+<p><strong>Birthday:</strong> <kbd>{{ contact.birthday }}</kbd></p>
+{% endif %}
+
+{% if contact.description %}
+<p><strong>Description:</strong> <kbd>{{ contact.description }}</kbd></p>
+{% endif %}
+
+{% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form method="POST" action="{% url 'pers_assist_app:contact' %}">
+<form method="POST" action="{% url 'pers_assist_app:contact_create' %}">
     {% csrf_token %}
 
     <div style="padding: 10px">
@@ -10,6 +10,13 @@
             {{ form.name }}
         </label>
         <span>{{ form.errors.name }}</span>
+    </div>
+
+        <div style="padding: 10px">
+        <label>Enter the contact surname:
+            {{ form.surname }}
+        </label>
+        <span>{{ form.errors.surname }}</span>
     </div>
 
     <div style="padding: 10px">
@@ -33,11 +40,18 @@
         <span>{{ form.errors.email }}</span>
     </div>
 
-        <div style="padding: 10px">
+    <div style="padding: 10px">
         <label>Enter the contact birthday:
             {{ form.birthday }}
         </label>
         <span>{{ form.errors.birthday }}</span>
+    </div>
+
+        <div style="padding: 10px">
+        <label>Enter the contact description:
+            {{ form.description }}
+        </label>
+        <span>{{ form.errors.description }}</span>
     </div>
 
     <div class="grid">
