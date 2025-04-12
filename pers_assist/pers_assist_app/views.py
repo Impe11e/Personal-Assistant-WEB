@@ -4,6 +4,7 @@ from .models import Contact
 from django.db.models import Q
 from datetime import timedelta, date
 
+
 def main(request):
     contacts = Contact.objects.all()
     return render(request, 'pers_assist_app/index.html', {
@@ -59,7 +60,7 @@ def search_contacts(request):
             Q(phone__icontains=query)
         )
     else:
-        contacts = Contact.objects.all()  # Если ничего не введено, показываем всех контактов
+        contacts = Contact.objects.all()
 
     return render(request, 'pers_assist_app/index.html', {
         'contacts': contacts,
