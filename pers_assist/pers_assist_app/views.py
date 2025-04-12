@@ -1,10 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ContactForm, ContactEditForm
 from .models import Contact
+from django.db.models import Q
 
 
 def main(request):
-    contacts = Contact.objects.all()
+    query = request.GET.get('search_item')
+    if query:
+        contacts = Contact.objects.filter(
+            Q(name__icontains=query) |
+            Q(surname__icontains=query) |
+            Q(phone__icontains=query)
+        )
+    else:
+        contacts = Contact.objects.all()
+
     return render(request, 'pers_assist_app/index.html', {"contacts": contacts})
 
 

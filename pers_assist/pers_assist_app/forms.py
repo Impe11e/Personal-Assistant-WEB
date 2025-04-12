@@ -22,18 +22,6 @@ class ContactEditForm(forms.ModelForm):
         model = Contact
         fields = ['name', 'surname', 'address', 'phone', 'email', 'birthday', 'description']
 
-    def clean_phone(self):
-        phone = self.cleaned_data['phone']
-
-        if self.instance and self.instance.id is not None:
-            if self.instance.phone == phone:
-                return phone
-
-            if Contact.objects.exclude(id=self.instance.id).filter(phone=phone).exists():
-                raise forms.ValidationError('Contact with this phone number already exists')
-
-        return phone
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['birthday'].widget = DateInput(attrs={'type': 'date'})
