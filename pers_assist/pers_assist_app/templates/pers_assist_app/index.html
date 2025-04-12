@@ -2,12 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Organizer</title>
+    <title>Address Book</title>
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
 </head>
 <body>
 <main class="container">
-    <h1>Main page</h1>
+    <form method="get" action="{% url 'pers_assist_app:main' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+        <input type="search" name="search_item" placeholder="Search..." value="{{ request.GET.search_item }}" style="flex: 1; min-width: 150px;">
+
+        <button type="submit" class="button" style="width: 150px;">Search</button>
+
+        {% if request.GET.search_item %}
+            <a href="{% url 'pers_assist_app:main' %}" role="button" class="secondary" style="width: 120px;">Show all</a>
+        {% endif %}
+    </form>
+
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+        <ul>
+            <li><a href="{% url 'pers_assist_app:contact_create' %}" role="button">Add contact</a></li>
+        </ul>
+    </nav>
+
+    {% for contact in contacts %}
+    <ul>
+        <li>
+            <a href="{% url 'pers_assist_app:contact_detail' contact.id %}" role="button" class="outline">{{ contact.name }} {% if contact.surname %}{{ contact.surname }}{% endif %}</a>
+            <a href="{% url 'pers_assist_app:contact_edit' contact.id %}" role="button" class="secondary"> Edit contact </a>
+            <a href="{% url 'pers_assist_app:contact_delete' contact.id %}" role="button" class="contrast"> Delete contact </a>
+        </li>
+    </ul>
+    {% endfor %}
 </main>
 </body>
 </html>
