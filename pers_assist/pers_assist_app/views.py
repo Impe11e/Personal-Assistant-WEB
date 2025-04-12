@@ -2,20 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ContactForm, ContactEditForm
 from .models import Contact
 from django.db.models import Q
+from datetime import timedelta, date
 
 
 def main(request):
-    query = request.GET.get('search_item')
-    if query:
-        contacts = Contact.objects.filter(
-            Q(name__icontains=query) |
-            Q(surname__icontains=query) |
-            Q(phone__icontains=query)
-        )
-    else:
-        contacts = Contact.objects.all()
-
-    return render(request, 'pers_assist_app/index.html', {"contacts": contacts})
+    contacts = Contact.objects.all()
+    return render(request, 'pers_assist_app/index.html', {
+        'contacts': contacts,
+    })
 
 
 def contact_create(request):
@@ -55,3 +49,41 @@ def contact_edit(request, contact_id):
         form = ContactEditForm(instance=contact)
 
     return render(request, 'pers_assist_app/contact_edit.html', {'form': form, 'contact': contact})
+
+
+def search_contacts(request):
+    query = request.GET.get('search_item', '')
+    if query:
+        contacts = Contact.objects.filter(
+            Q(name__icontains=query) |
+            Q(surname__icontains=query) |
+            Q(phone__icontains=query)
+        )
+    else:
+        contacts = Contact.objects.all()
+
+    return render(request, 'pers_assist_app/index.html', {
+        'contacts': contacts,
+        'search_item': query,
+    })
+
+
+def search_birthdays(request):
+    days_ahead = request.GET.get('days_ahead', 7)
+    try:
+        days_ahead = int(days_ahead)
+    except ValueError:
+        days_ahead = 7
+
+    today = date.today()
+    upcoming_date = today + timedelta(days=days_ahead)
+
+    upcoming_birthday_contacts = Contact.objects.filter(
+        birthday__gte=today,
+        birthday__lte=upcoming_date
+    ).exclude(birthday=None)
+
+    return render(request, 'pers_assist_app/index.html', {
+        'contacts': upcoming_birthday_contacts,
+        'days_ahead': days_ahead,
+    })
