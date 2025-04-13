@@ -8,34 +8,11 @@
 <body>
 <main class="container">
 
-    <form method="get" action="{% url 'pers_assist_app:search_contacts' %}" style="display: flex; gap: 0.5rem; align-items: center;">
-        <input type="search" name="search_item" placeholder="Search..." value="{{ request.GET.search_item }}" style="flex: 1; min-width: 150px;">
-        <button type="submit" class="button" style="width: 150px;">Search</button>
-
-        <a href="{% url 'pers_assist_app:search_contacts' %}" role="button" class="secondary" style="width: 120px;">Show all</a>
-    </form>
-
     <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
         <ul>
-            <li><a href="{% url 'pers_assist_app:contact_create' %}" role="button">Add contact</a></li>
+            <li><a href="{% url 'pers_assist_app:contacts' %}" role="button">My contacts</a></li>
         </ul>
-
-        <form method="get" action="{% url 'pers_assist_app:search_birthdays' %}" style="display: flex; gap: 0.5rem; align-items: center; margin-top: 15px">
-            <label for="days_ahead" style="margin-right: 5px; width: 200px;"><b>Search for contacts in the range of their b-days:</b></label>
-            <input type="number" name="days_ahead" id="days_ahead" value="{{ request.GET.days_ahead|default:7 }}" style="width: 100px;">
-            <button type="submit" class="secondary" style="width: 200px;">Search Birthdays</button>
-        </form>
     </nav>
-
-    {% for contact in contacts %}
-    <ul>
-        <li>
-            <a href="{% url 'pers_assist_app:contact_detail' contact.id %}" role="button" class="outline">{{ contact.name }} {% if contact.surname %}{{ contact.surname }}{% endif %}</a>
-            <a href="{% url 'pers_assist_app:contact_edit' contact.id %}" role="button" class="secondary"> Edit contact </a>
-            <a href="{% url 'pers_assist_app:contact_delete' contact.id %}" role="button" class="contrast"> Delete contact </a>
-        </li>
-    </ul>
-    {% endfor %}
 
 </main>
 </body>
