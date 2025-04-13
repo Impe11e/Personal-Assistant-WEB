@@ -11,13 +11,19 @@ def main(request):
         'contacts': contacts,
     })
 
+def contacts(request):
+    contacts = Contact.objects.all()
+    return render(request, 'pers_assist_app/contacts.html', {
+        'contacts': contacts,
+    })
+
 
 def contact_create(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(to='pers_assist_app:main')
+            return redirect(to='pers_assist_app:contacts')
         else:
             return render(request, 'pers_assist_app/contact_create.html', {'form': form})
 
@@ -33,7 +39,7 @@ def contact_delete(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id)
     if request.method == 'POST':
         contact.delete()
-        return redirect('pers_assist_app:main')
+        return redirect('pers_assist_app:contacts')
 
     return render(request, 'pers_assist_app/contact_confirm_delete.html', {"contact": contact})
 
@@ -62,7 +68,7 @@ def search_contacts(request):
     else:
         contacts = Contact.objects.all()
 
-    return render(request, 'pers_assist_app/index.html', {
+    return render(request, 'pers_assist_app/contacts.html', {
         'contacts': contacts,
         'search_item': query,
     })
@@ -83,7 +89,7 @@ def search_birthdays(request):
         birthday__lte=upcoming_date
     ).exclude(birthday=None)
 
-    return render(request, 'pers_assist_app/index.html', {
+    return render(request, 'pers_assist_app/contacts.html', {
         'contacts': upcoming_birthday_contacts,
         'days_ahead': days_ahead,
     })
