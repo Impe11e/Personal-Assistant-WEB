@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+
 from .forms import ContactForm, ContactEditForm
 from .models import Contact
 from django.db.models import Q
@@ -19,20 +21,24 @@ def contacts(request):
 
 
 def contact_create(request):
+    back_url = reverse('pers_assist_app:contacts')
+
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(to='pers_assist_app:contacts')
+            return redirect(back_url)
         else:
-            return render(request, 'pers_assist_app/contact_create.html', {'form': form})
+            return render(request, 'pers_assist_app/contact_create.html', {'form': form, 'back_url': back_url})
 
-    return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm()})
+    return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(), 'back_url': back_url})
+
 
 
 def contact_detail(request, contact_id):
+    back_url = reverse('pers_assist_app:contacts')
     contact = get_object_or_404(Contact, pk=contact_id)
-    return render(request, 'pers_assist_app/contact_detail.html', {"contact": contact})
+    return render(request, 'pers_assist_app/contact_detail.html', {"contact": contact, "back_url": back_url})
 
 
 def contact_delete(request, contact_id):
@@ -45,6 +51,8 @@ def contact_delete(request, contact_id):
 
 
 def contact_edit(request, contact_id):
+    back_url = reverse('pers_assist_app:contacts')
+
     contact = get_object_or_404(Contact, pk=contact_id)
     if request.method == 'POST':
         form = ContactEditForm(request.POST, instance=contact)
@@ -54,7 +62,7 @@ def contact_edit(request, contact_id):
     else:
         form = ContactEditForm(instance=contact)
 
-    return render(request, 'pers_assist_app/contact_edit.html', {'form': form, 'contact': contact})
+    return render(request, 'pers_assist_app/contact_edit.html', {'form': form, 'contact': contact, 'back_url': back_url})
 
 
 def search_contacts(request):
