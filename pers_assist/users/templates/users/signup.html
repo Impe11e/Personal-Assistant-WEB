@@ -1,0 +1,38 @@
+{% extends 'users/base-sign-forms.html' %}
+
+{% block form %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="h3 m-0 font-weight-normal">Please sign up</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'users:signup' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Username:</label>
+                {{ form.username }}
+                <span class="form-text text-danger">{{ form.errors.username.as_text }}</span>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                {{ form.email }}
+                <span class="form-text text-danger">{{ form.errors.email.as_text }}</span>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                {{ form.password1 }}
+                <span class="form-text text-danger">{{ form.errors.password1.as_text }}</span>
+            </div>
+            <div class="form-group">
+                <label>Password confirmation:</label>
+                {{ form.password2 }}
+                <span class="form-text text-danger">{{ form.errors.password2.as_text }}</span>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+        </form>
+    </div>
+    <div class="card-footer">
+        <p class="m-0">If you already have profile, please <a href="{% url 'users:signin' %}">sign in</a></p>
+    </div>
+</div>
+{% endblock %}
