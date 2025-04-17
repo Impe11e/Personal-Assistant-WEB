@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "pers_assist_app",
-    "users"
+    "users",
+    "news"
 ]
 
 MIDDLEWARE = [
