@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'pers_assist.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'NAME': 'perassisdb',
+        'USER': 'ashasha',
+        'PASSWORD': '1234567vocem',
+        'HOST': 'localhost',
+        'PORT': '5555',
     }
 }
 

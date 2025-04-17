@@ -12,4 +12,16 @@ urlpatterns = [
     path('contact/<int:contact_id>/edit', views.contact_edit, name='contact_edit'),
     path('search_birthdays/', views.search_birthdays, name='search_birthdays'),
     path('search_contacts/', views.search_contacts, name='search_contacts'),
+
+    # notes
+    path('notes/', views.notes, name='notes'),
+    path('notes/tag/<slug:tag>/', views.notes, name='notes_by_tag'),
+    path('notes/search/', views.search_note_by_query, name='notes_by_query'),
+
+    path('note/create/', views.create_note, name='note_create'),
+    path('note/<int:note_id>/delete/', views.delete_note, name='note_delete'),
+    path('note/<int:note_id>/edit/', views.edit_note, name='note_edit'),
+
+    # tags
+    path('tag_create/', views.create_tag, name='tag_create'),
 ]
