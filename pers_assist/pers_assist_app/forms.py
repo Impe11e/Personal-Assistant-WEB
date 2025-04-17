@@ -1,5 +1,5 @@
 from django.forms import ModelForm, CharField, TextInput, DateInput, EmailField, DateField
-from .models import Contact
+from .models import Contact, UploadedFile
 from django import forms
 
 
@@ -25,3 +25,8 @@ class ContactEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['birthday'].widget = DateInput(attrs={'type': 'date'})
+
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = UploadedFile
+        fields = ['title', 'file']
