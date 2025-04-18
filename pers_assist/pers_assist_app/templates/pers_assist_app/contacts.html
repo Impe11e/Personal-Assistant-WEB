@@ -39,10 +39,10 @@
                     <h1>Search contacts</h1>
                     <form class="form" method="GET" action="{% url 'pers_assist_app:search_contacts' %}">
                         <div class="form-inner-block">
-                            <label>By content...</label>
+                            <label>Enter contact name</label>
                             <div class="search-row">
-                                <input  class="input" type="text"  name="search_item" placeholder="Query">
-                                <button class="show-all-button" type="submit">☓</button>
+                                <input  class="input" type="text"  name="search_item" placeholder="Jhon Doe">
+                                <a href="{% url 'pers_assist_app:contacts' %}" class="show-all-button">☓</a>
                             </div>
                             <button class="submit-button" type="submit">Search</button>
                         </div>
@@ -50,10 +50,10 @@
 
                     <form class="form" method="GET" action="{% url 'pers_assist_app:search_birthdays' %}">
                         <div class="form-inner-block">
-                            <label>By birthday in range...</label>
+                            <label>Enter birthday range</label>
                             <div class="search-row">
-                                <input  class="input" type="text"  name="days_ahead" placeholder="Query">
-                                <button class="show-all-button" type="submit">☓</button>
+                                <input  class="input" type="text"  name="days_ahead" placeholder="7">
+                                <a href="{% url 'pers_assist_app:contacts' %}" class="show-all-button">☓</a>
                             </div>
                             <button class="submit-button" type="submit">Search</button>
                         </div>

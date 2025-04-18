@@ -92,7 +92,7 @@ class NoteEditForm(ModelForm):
 
 # TAGS
 class TagCreateForm(ModelForm):
-    tag_name = CharField(min_length=2, max_length=100, required=True, widget=TextInput(attrs={'placeholder': '"New"'}))
+    tag_name = CharField(min_length=2, max_length=100, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': '"New"'}))
 
 
     class Meta:

@@ -524,9 +524,9 @@ footer {
     outline: none;
 }
 .red-note:hover {
-    box-shadow: 0px 2px 10px -2px rgba(194,104,131,0.5);
-    -webkit-box-shadow: 0px 2px 10px -2px rgba(194,104,131,0.5);
-    -moz-box-shadow: 0px 2px 10px -2px rgba(194,104,131,0.5);
+    box-shadow: 0px 2px 10px -2px rgba(194,104,131,0.9);
+    -webkit-box-shadow: 0px 2px 10px -2px rgba(194,104,131,0.9);
+    -moz-box-shadow: 0px 2px 10px -2px rgba(194,104,131,0.9);
 }
 
 .green-note {
@@ -534,9 +534,9 @@ footer {
     outline: none;
 }
 .green-note:hover {
-    box-shadow: 0px 2px 10px -2px rgba(100, 214, 161, 0.5);
-    -webkit-box-shadow: 0px 2px 10px -2px rgba(100, 214, 161, 0.5);
-    -moz-box-shadow: 0px 2px 10px -2px rgba(100, 214, 161, 0.5);
+    box-shadow: 0px 2px 10px -2px rgba(100, 214, 161, 0.9);
+    -webkit-box-shadow: 0px 2px 10px -2px rgba(100, 214, 161, 0.9);
+    -moz-box-shadow: 0px 2px 10px -2px rgba(100, 214, 161, 0.9);
 }
 
 .blue-note {
@@ -544,9 +544,9 @@ footer {
     outline: none;
 }
 .blue-note:hover {
-    box-shadow: 0px 2px 10px -2px rgba(101, 167, 230,0.5);
-    -webkit-box-shadow: 0px 2px 10px -2px rgba(101, 167, 230,0.5);
-    -moz-box-shadow: 0px 2px 10px -2px rgba(101, 167, 230,0.5);
+    box-shadow: 0px 2px 10px -2px rgba(101, 167, 230,0.9);
+    -webkit-box-shadow: 0px 2px 10px -2px rgba(101, 167, 230,0.9);
+    -moz-box-shadow: 0px 2px 10px -2px rgba(101, 167, 230,0.9);
 }
 
 .purple-note {
@@ -554,9 +554,9 @@ footer {
     outline: none;
 }
 .purple-note:hover {
-    box-shadow: 0px 2px 10px -2px rgba(142, 104, 248,0.5);
-    -webkit-box-shadow: 0px 2px 10px -2px rgba(142, 104, 248,0.5);
-    -moz-box-shadow: 0px 2px 10px -2px rgba(142, 104, 248,0.5);
+    box-shadow: 0px 2px 10px -2px rgba(142, 104, 248,0.9);
+    -webkit-box-shadow: 0px 2px 10px -2px rgba(142, 104, 248,0.9);
+    -moz-box-shadow: 0px 2px 10px -2px rgba(142, 104, 248,0.9);
 }
 
 .yellow-note {
@@ -564,9 +564,9 @@ footer {
     outline: none;
 }
 .yellow-note:hover {
-    box-shadow: 0px 2px 10px -2px rgba(243, 197, 96,0.5);
-    -webkit-box-shadow: 0px 2px 10px -2px rgba(243, 197, 96,0.5);
-    -moz-box-shadow: 0px 2px 10px -2px rgba(243, 197, 96,0.5);
+    box-shadow: 0px 2px 10px -2px rgba(243, 197, 96,0.9);
+    -webkit-box-shadow: 0px 2px 10px -2px rgba(243, 197, 96,0.9);
+    -moz-box-shadow: 0px 2px 10px -2px rgba(243, 197, 96,0.9);
 }
 /* =========== */
 

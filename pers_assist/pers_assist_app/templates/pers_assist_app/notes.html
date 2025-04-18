@@ -41,9 +41,11 @@
                     <form class="form" method="GET" action="{% url 'pers_assist_app:notes_by_query' %}">
 
                         <div class="form-inner-block">
-                            <label>By content...</label>
-                            <input class="input" type="text"  name="q" placeholder="Query">
-
+                                <label>Enter note title or text</label>
+                            <div class="search-row">
+                                <input class="input" type="text"  name="q" placeholder="Query">
+                                <a href="{% url 'pers_assist_app:notes' %}" class="show-all-button">☓</a>
+                            </div>
                             <button class="submit-button" type="submit">Search</button>
                         </div>
                     </form>
