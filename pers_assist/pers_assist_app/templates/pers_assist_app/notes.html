@@ -6,8 +6,9 @@
     <title>Personal Assistant | Notes</title>
     {% block extra_css %}
         {% load static %}
-            <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
-            <link rel="stylesheet" href="{% static 'pers_assist_app/forms_style.css' %}">
+        <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+        <link rel="stylesheet" href="{% static 'pers_assist_app/forms_style.css' %}">
+
     {% endblock %}
 <!--    <link rel="stylesheet" href="main_style.css">-->
     <link rel="icon" href="images/kof_logo.ico" type="image/x-icon">
@@ -30,7 +31,7 @@
     <div class="all-items">
         <!-- ITEM TYPE 1 -->
         <div class="item-type">
-            <div class="arrow-button-left"><img src="images/icons8-back-30-white.png"></div>
+            <a href="{% url 'pers_assist_app:contacts' %}" class="arrow-button-left"><img src="{% static 'pers_assist_app/images/icons8-back-30-white.png' %}"></a>
 
             <div class="item-on-page-block">
 
@@ -41,7 +42,7 @@
 
                         <div class="form-inner-block">
                             <label>By content...</label>
-                            <input  class="input" type="text"  name="q" placeholder="Query">
+                            <input class="input" type="text"  name="q" placeholder="Query">
 
                             <button class="submit-button" type="submit">Search</button>
                         </div>
@@ -96,14 +97,9 @@
 
             </div>
 
-            <div class="arrow-button-right"><img src="images/icons8-forward-30-white.png"></div>
+            <a href="{% url 'pers_assist_app:contacts' %}" class="arrow-button-left"><img src="{% static 'pers_assist_app/images/icons8-forward-30-white.png' %}"></a>
         </div>
     </div>
-
-
-    <script src="swiper.js"></script>
-    <script src="jabascript_main.js"></script>
-
 </body>
 
 <footer></footer>

@@ -4,13 +4,13 @@ from django import forms
 
 
 class ContactForm(ModelForm):
-    name = CharField(min_length=2, max_length=50, required=True, widget=TextInput(attrs={'placeholder': 'John'}))
-    surname = CharField(min_length=2, max_length=100, required=False, widget=TextInput(attrs={'placeholder': 'Johnson'}))
-    address = CharField(max_length=150, required=False, widget=TextInput(attrs={'placeholder': 'Ukraine, Kyiv, Svobody av.'}))
-    phone = CharField(max_length=20, required=True, widget=TextInput(attrs={'placeholder': '+380991234567'}))
-    email = EmailField(required=False, widget=TextInput(attrs={'placeholder': 'exapmle@gmail.com'}))
-    birthday = DateField(required=False, widget=DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}))
-    description = CharField(max_length=500, required=False, widget=TextInput(attrs={'placeholder': 'My old classmate'}))
+    name = CharField(min_length=2, max_length=50, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': 'John'}))
+    surname = CharField(min_length=2, max_length=100, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Johnson'}))
+    address = CharField(max_length=150, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Ukraine, Kyiv, Svobody av.'}))
+    phone = CharField(max_length=20, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': '+380991234567'}))
+    email = EmailField(required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'exapmle@gmail.com'}))
+    birthday = DateField(required=False, widget=DateInput(attrs={'class': 'input', 'type': 'date', 'placeholder': 'DD-MM-YYYY'}))
+    description = CharField(max_length=500, required=False, widget=Textarea(attrs={'class': 'input textarea-input', 'placeholder': 'My old classmate'}))
 
     class Meta:
         model = Contact
@@ -18,19 +18,27 @@ class ContactForm(ModelForm):
 
 
 class ContactEditForm(forms.ModelForm):
+    name = CharField(min_length=2, max_length=50, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': 'John'}))
+    surname = CharField(min_length=2, max_length=100, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Johnson'}))
+    address = CharField(max_length=150, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Ukraine, Kyiv, Svobody av.'}))
+    phone = CharField(max_length=20, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': '+380991234567'}))
+    email = EmailField(required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'exapmle@gmail.com'}))
+    birthday = DateField(required=False, widget=DateInput(attrs={'class': 'input', 'type': 'date', 'placeholder': 'DD-MM-YYYY'}))
+    description = CharField(max_length=500, required=False, widget=Textarea(attrs={'class': 'input textarea-input', 'placeholder': 'My old classmate'}))
+
     class Meta:
         model = Contact
         fields = ['name', 'surname', 'address', 'phone', 'email', 'birthday', 'description']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['birthday'].widget = DateInput(attrs={'type': 'date'})
+        self.fields['birthday'].widget = DateInput(attrs={'class': 'input', 'type': 'date'})
 
 
 # NOTES
 class NoteCreateForm(ModelForm):
-    title = CharField(min_length=2, max_length=100, required=True, widget=TextInput(attrs={'placeholder': 'Note'}))
-    text = CharField(min_length=2, required=True, widget=Textarea(attrs={'placeholder': 'Note text'}))
+    title = CharField(min_length=2, max_length=100, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Note'}))
+    text = CharField(min_length=2, required=True, widget=Textarea(attrs={'class': 'input textarea-input', 'placeholder': 'Note text'}))
 
     color = forms.ChoiceField(
         choices=[
@@ -46,7 +54,7 @@ class NoteCreateForm(ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # или SelectMultiple, если хочешь dropdown
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'choice'}),  # или SelectMultiple, если хочешь dropdown
         required=False
     )
 
@@ -56,8 +64,8 @@ class NoteCreateForm(ModelForm):
 
 
 class NoteEditForm(ModelForm):
-    title = CharField(min_length=2, max_length=100, required=True, widget=TextInput(attrs={'placeholder': 'Note'}))
-    text = CharField(min_length=2, required=True, widget=Textarea(attrs={'placeholder': 'Note text'}))
+    title = CharField(min_length=2, max_length=100, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Note'}))
+    text = CharField(min_length=2, required=True, widget=Textarea(attrs={'class': 'input', 'placeholder': 'Note text'}))
 
     color = forms.ChoiceField(
         choices=[
@@ -73,7 +81,7 @@ class NoteEditForm(ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # или SelectMultiple, если хочешь dropdown
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'choice'}),  # или SelectMultiple, если хочешь dropdown
         required=False
     )
 

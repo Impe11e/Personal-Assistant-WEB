@@ -7,12 +7,12 @@ from django.db.models import Q
 from datetime import timedelta, date
 
 
-
 def main(request):
     contacts = Contact.objects.all()
     return render(request, 'pers_assist_app/index.html', {
         'contacts': contacts,
     })
+
 
 def contacts(request):
     contacts = Contact.objects.all()
@@ -39,7 +39,7 @@ def contact_create(request):
 def contact_detail(request, contact_id):
     back_url = reverse('pers_assist_app:contacts')
     contact = get_object_or_404(Contact, pk=contact_id)
-    return render(request, 'pers_assist_app/contact_detail.html', {"contact": contact, "back_url": back_url})
+    return render(request, 'pers_assist_app/contact_detail .html', {"contact": contact, "back_url": back_url})
 
 
 def contact_delete(request, contact_id):
@@ -91,15 +91,18 @@ def search_birthdays(request):
         days_ahead = 7
 
     today = date.today()
-    upcoming_date = today + timedelta(days=days_ahead)
+    upcoming_dates = [(today + timedelta(days=i)) for i in range(days_ahead + 1)]
+    upcoming_month_day = [(d.month, d.day) for d in upcoming_dates]
 
-    upcoming_birthday_contacts = Contact.objects.filter(
-        birthday__gte=today,
-        birthday__lte=upcoming_date
-    ).exclude(birthday=None)
+    contacts = Contact.objects.exclude(birthday=None)
+    birthday_contacts = []
+
+    for contact in contacts:
+        if (contact.birthday.month, contact.birthday.day) in upcoming_month_day:
+            birthday_contacts.append(contact)
 
     return render(request, 'pers_assist_app/contacts.html', {
-        'contacts': upcoming_birthday_contacts,
+        'contacts': birthday_contacts,
         'days_ahead': days_ahead,
     })
 

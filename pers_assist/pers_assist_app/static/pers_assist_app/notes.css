@@ -504,6 +504,9 @@ footer {
 .note-details {
     word-wrap: break-word;
     max-width: 500px;
+    min-width: 500px;
+
+    color: black;
 }
 .note-details p {
     color:rgb(100, 100, 100);
@@ -512,6 +515,8 @@ footer {
 .note-details h3{
     max-width: 500px;
 }
+
+
 
 /* COLORED NOTES */
 .red-note {
@@ -688,5 +693,35 @@ footer {
     border: 1px solid rgb(219, 130, 157);
 
     transform: scale(0.95)
+}
 
+.detail-block {
+    border: 1px solid rgb(219, 130, 157);
+    border-radius: 25px;
+    padding: 30px;
+
+    width: 500px;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: space-between;
+}
+.detail-block h1{
+    align-self: center;
+}
+.detail-block div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.detail-block kbd {
+    background-color: rgb(219, 130, 157);
+    color: white;
+    padding: 2px 15px;
+
+    border-radius: 25px;
 }
