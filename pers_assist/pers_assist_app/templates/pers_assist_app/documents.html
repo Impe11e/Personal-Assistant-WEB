@@ -8,29 +8,37 @@
 <body>
 <main class="container">
 
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-        <a href="{% url 'pers_assist_app:main' %}" role="button" class="secondary" style="flex-shrink: 0; width: 130px;">Main menu</a>
-        <form method="get" action="{% url 'pers_assist_app:search_documents' %}" style="display: flex; gap: 0.5rem; align-items: center; flex: 1;">
-            <input type="search" name="search_item" placeholder="Search documents..." value="{{ request.GET.search_item }}" style="flex: 1; min-width: 150px;">
-            <button type="submit" class="button" style="width: 120px;">Search</button>
-            <a href="{% url 'pers_assist_app:search_documents' %}" role="button" class="secondary" style="width: 100px;">Show all</a>
-        </form>
-    </div>
-
     <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
         <ul>
+            <li><a href="{% url 'pers_assist_app:main' %}" role="button" class="secondary" style="flex-shrink: 0; width: 130px;">Main menu</a></li>
             <li><a href="{% url 'pers_assist_app:upload_document' %}" role="button">Upload document</a></li>
         </ul>
     </nav>
 
-    {% for document in documents %}
-    <ul>
-        <li>
-            <a href="{% url 'pers_assist_app:document_download' document.id %}" class="button" role="button"><b>{{ document.title}}</b> <small>({{ document.get_category_display }})</small></a>
-            <a href="{% url 'pers_assist_app:document_delete' document.id %}" role="button" class="outline">Delete</a>
-        </li>
-    </ul>
-    {% endfor %}
+    <form method="get" style="margin-bottom: 30px;">
+        <label for="category">Filter by category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for key, name in categories.items %}
+                <option value="{{ key }}" {% if selected_category == key %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if documents %}
+        {% for document in documents %}
+            <ul>
+                <li>
+                    <a href="{% url 'pers_assist_app:document_download' document.id %}" class="button" role="button">
+                        <b>{{ document.title }}</b> <small>({{ document.get_category_display }})</small>
+                    </a>
+                    <a href="{% url 'pers_assist_app:document_delete' document.id %}" role="button" class="outline">Delete</a>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>No documents found.</p>
+    {% endif %}
 
 </main>
 </body>

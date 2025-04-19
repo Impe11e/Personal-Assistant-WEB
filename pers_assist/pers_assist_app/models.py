@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CharField, TextField
@@ -6,7 +7,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from cloudinary_storage.storage import MediaCloudinaryStorage, RawMediaCloudinaryStorage
 
 
-# TODO: try without null, just blank
 class Contact(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts', null=True)
     name = models.CharField(max_length=50, null=False)
@@ -31,8 +31,6 @@ class Note(models.Model):
     color = CharField(blank=True, null=True)
     tags = models.ManyToManyField('Tag')
 
-    # owner = ForeignKey(User, on_delete=CASCADE)
-
     def __str__(self):
         tags = ', '.join([tag.tag_name for tag in self.tags.all()])
         return f'{self.title} | {tags or "No Tags"}'
@@ -40,17 +38,20 @@ class Note(models.Model):
 
 class Tag(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tags', null=True)
-    tag_name = CharField(max_length=50, blank=True, null=False, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
-
+    tag_name = CharField(max_length=50, blank=True, null=False)
+    slug = models.SlugField(blank=True)
+    
+    class Meta:
+        unique_together = ('owner', 'tag_name')
+        
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.tag_name)
         super().save(*args, **kwargs)
-
+    
     def __str__(self):
         return self.tag_name
-
+        
 
 class UploadedFile(models.Model):
     CATEGORY_CHOICES = [
@@ -63,10 +64,9 @@ class UploadedFile(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='documents', null=True)
     title = models.CharField(max_length=255)
-    file = models.FileField(upload_to='files/')
+    file = CloudinaryField(resource_type='raw')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='other')
-    cloudinary_public_id = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
