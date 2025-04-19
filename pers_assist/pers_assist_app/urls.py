@@ -31,5 +31,4 @@ urlpatterns = [
     path('upload_doc/', views.upload_document, name='upload_document'),
     path('download_doc/<int:document_id>/', views.document_download, name='document_download'),
     path('document/<int:document_id>/delete', views.document_delete, name='document_delete'),
-    path('search_documents/', views.search_documents, name='search_documents'),
 ]

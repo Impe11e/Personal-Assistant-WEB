@@ -26,10 +26,18 @@ def contacts(request):
 
 @login_required(login_url='/signin/')
 def documents(request):
+    category = request.GET.get('category')
     documents = UploadedFile.objects.filter(owner=request.user)
-    return render(request, 'pers_assist_app/documents.html', {
+    if category:
+        documents = documents.filter(category=category)
+
+    context = {
         'documents': documents,
-    })
+        'selected_category': category,
+        'categories': dict(UploadedFile.CATEGORY_CHOICES)
+    }
+
+    return render(request, 'pers_assist_app/documents.html', context)
 
 
 # CONTACTS
@@ -144,7 +152,7 @@ def create_note(request):
     back_url = reverse('pers_assist_app:notes')
 
     if request.method == 'POST':
-        form = NoteCreateForm(request.POST)
+        form = NoteCreateForm(request.POST, user=request.user)
         if form.is_valid():
             note = form.save(commit=False)
             note.owner = request.user
@@ -154,8 +162,10 @@ def create_note(request):
         else:
             return render(request, 'pers_assist_app/note_create.html', {'form': form, 'back_url': back_url})
 
-    return render(request, 'pers_assist_app/note_create.html', {'form': NoteCreateForm(), 'back_url': back_url})
-
+    return render(request, 'pers_assist_app/note_create.html', {
+        'form': NoteCreateForm(user=request.user), 
+        'back_url': back_url
+    })
 
 @login_required(login_url='/signin/')
 def delete_note(request, note_id):
@@ -174,16 +184,16 @@ def edit_note(request, note_id):
     note = get_object_or_404(Note, pk=note_id, owner=request.user)
     
     if request.method == 'POST':
-        form = NoteEditForm(request.POST, instance=note)
+        form = NoteEditForm(request.POST, instance=note, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('pers_assist_app:notes')
     else:
-        form = NoteEditForm(instance=note)
+        form = NoteEditForm(instance=note, user=request.user)
 
     return render(request, 'pers_assist_app/note_edit.html', {'form': form, 'note': note, 'back_url': back_url})
 
-
+    
 @login_required(login_url='/signin/')
 def search_note_by_query(request):
     query = request.GET.get('q', '')
@@ -237,7 +247,11 @@ def upload_document(request):
 def document_download(request, document_id):
     try:
         document = get_object_or_404(UploadedFile, id=document_id, owner=request.user)
-        return FileResponse(document.file.open('rb'), as_attachment=True, filename=document.file.name)
+        if document.file:
+            file_url = document.file.url
+            return redirect(file_url)
+        else:
+            raise Http404("File not found")
     except UploadedFile.DoesNotExist:
         raise Http404("Document not found")
 
@@ -253,19 +267,3 @@ def document_delete(request, document_id):
 
     return render(request, 'pers_assist_app/document_confirm_delete.html', {"document": document, "back_url": back_url})
 
-
-@login_required(login_url='/signin/')
-def search_documents(request):
-    query = request.GET.get('search_item', '')
-    if query:
-        documents = UploadedFile.objects.filter(
-            title__icontains=query,
-            owner=request.user
-        )
-    else:
-        documents = UploadedFile.objects.filter(owner=request.user)
-
-    return render(request, 'pers_assist_app/documents.html', {
-        'documents': documents,
-        'search_item': query,
-    })

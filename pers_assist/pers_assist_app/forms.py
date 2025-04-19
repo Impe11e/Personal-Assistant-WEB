@@ -45,13 +45,21 @@ class NoteCreateForm(ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # или SelectMultiple, если хочешь dropdown
+        widget=forms.CheckboxSelectMultiple,
         required=False
     )
 
     class Meta:
         model = Note
         fields = ['title', 'text', 'color', 'tags']
+        
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if self.user:
+            self.fields['tags'].queryset = Tag.objects.filter(owner=self.user)
+
 
 
 class NoteEditForm(ModelForm):
@@ -79,6 +87,13 @@ class NoteEditForm(ModelForm):
     class Meta:
         model = Note
         fields = ['title', 'text', 'color', 'tags']
+        
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if self.user:
+            self.fields['tags'].queryset = Tag.objects.filter(owner=self.user)
 
 
 # TAGS
