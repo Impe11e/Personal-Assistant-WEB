@@ -1,10 +1,10 @@
 from django.http import Http404, FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.db.models import Q
 
-from .forms import ContactForm, ContactEditForm, FileUploadForm
-from .models import Contact, UploadedFile
+from .forms import ContactForm, ContactEditForm, NoteCreateForm, TagCreateForm, NoteEditForm, FileUploadForm
+from django.db.models import Q
+from .models import Contact, UploadedFile, Note, Tag
 
 from datetime import timedelta, date
 
@@ -30,6 +30,7 @@ def documents(request):
     })
 
 
+# CONTACTS
 def contact_create(request):
     back_url = reverse('pers_assist_app:contacts')
 
@@ -42,7 +43,6 @@ def contact_create(request):
             return render(request, 'pers_assist_app/contact_create.html', {'form': form, 'back_url': back_url})
 
     return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(), 'back_url': back_url})
-
 
 
 def contact_detail(request, contact_id):
@@ -113,6 +113,83 @@ def search_birthdays(request):
     })
 
 
+# NOTES
+def notes(requests, tag=None):
+    if tag:
+        tag_obj = get_object_or_404(Tag, slug__iexact=tag)
+        all_notes = Note.objects.filter(tags=tag_obj)
+    else:
+        all_notes = Note.objects.all()
+
+    all_tags = Tag.objects.all()
+
+    return render(requests, 'pers_assist_app/notes.html', {'notes': all_notes, 'tags': all_tags})
+
+
+def create_note(request):
+    back_url = reverse('pers_assist_app:notes')
+
+    if request.method == 'POST':
+        form = NoteCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(back_url)
+        else:
+            return render(request, 'pers_assist_app/note_create.html', {'form': form, 'back_url': back_url})
+
+    return render(request, 'pers_assist_app/note_create.html', {'form': NoteCreateForm(), 'back_url': back_url})
+
+
+def delete_note(request, note_id):
+    all_notes = Note.objects.all()
+    note = get_object_or_404(Note, pk=note_id)
+    if request.method == 'POST':
+        note.delete()
+        # print(f'{note.title} was deleted successful!')
+        return redirect('pers_assist_app:notes')
+
+    return render(request, 'pers_assist_app/notes.html', {'notes': all_notes})
+
+
+def edit_note(request, note_id):
+    back_url = reverse('pers_assist_app:notes')
+
+    note = get_object_or_404(Note, pk=note_id)
+    if request.method == 'POST':
+        form = NoteEditForm(request.POST, instance=note)
+        if form.is_valid():
+            form.save()
+            return redirect('pers_assist_app:notes')
+    else:
+        form = NoteEditForm(instance=note)
+
+    return render(request, 'pers_assist_app/note_edit.html', {'form': form, 'note': note, 'back_url': back_url})
+
+
+def search_note_by_query(request):
+    query = request.GET.get('q', '')
+    all_notes = Note.objects.filter(text__icontains=query) or Note.objects.filter(title__icontains=query)
+
+    all_tags = Tag.objects.all()
+
+    return render(request, 'pers_assist_app/notes.html', {'notes': all_notes, 'tags': all_tags})
+
+
+# TAGS
+def create_tag(request):
+    back_url = reverse('pers_assist_app:note_create')
+
+    if request.method == 'POST':
+        form = TagCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(back_url)
+        else:
+            return render(request, 'pers_assist_app/tag_create.html', {'form': form, 'back_url': back_url})
+
+    return render(request, 'pers_assist_app/tag_create.html', {'form': TagCreateForm(), 'back_url': back_url})
+
+# DOCUMENTS
 def upload_document(request):
     back_url = reverse('pers_assist_app:documents')
 
@@ -126,6 +203,7 @@ def upload_document(request):
 
     return render(request, 'pers_assist_app/docs_upload.html', {'form': form, 'back_url': back_url})
 
+
 # TODO: convert to cloud storage
 def document_download(request, document_id):
     try:
@@ -133,6 +211,7 @@ def document_download(request, document_id):
         return FileResponse(document.file.open('rb'), as_attachment=True, filename=document.file.name)
     except UploadedFile.DoesNotExist:
         raise Http404("Document not found")
+
 
 def document_delete(request, document_id):
     back_url = reverse('pers_assist_app:documents')
