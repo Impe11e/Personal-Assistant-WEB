@@ -1,0 +1,45 @@
+{% extends 'users/base-template.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="h3">{{ page_title }}</h1>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4 card-title mb-3">Contact List</h2>
+                <a href="{% url 'contacts:main' %}" class="btn btn-outline-primary">See more...</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4 card-title mb-3">Note List</h2>
+                <a href="{% url 'note-list' %}" class="btn btn-outline-primary">See more...</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4 card-title mb-3">File Manager</h2>
+                <a href="{% url 'filemanager:uploaded_files' %}" class="btn btn-outline-primary">See more...</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4 card-title mb-3">Daily News</h2>
+                <a href="{% url 'news:news' %}" class="btn btn-outline-primary">See more...</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

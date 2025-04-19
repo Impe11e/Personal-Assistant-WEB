@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CharField, TextField
 from django.utils.text import slugify
@@ -7,6 +8,7 @@ from cloudinary_storage.storage import MediaCloudinaryStorage, RawMediaCloudinar
 
 # TODO: try without null, just blank
 class Contact(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts', null=True)
     name = models.CharField(max_length=50, null=False)
     surname = models.CharField(max_length=150, blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
@@ -22,6 +24,7 @@ class Contact(models.Model):
 
 # NOTES
 class Note(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes', null=True)
     title = CharField(max_length=100, blank=True, null=False)
     text = TextField(blank=True, null=True)  # like just for reminders, where we dont need more text than title
 
@@ -36,6 +39,7 @@ class Note(models.Model):
 
 
 class Tag(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tags', null=True)
     tag_name = CharField(max_length=50, blank=True, null=False, unique=True)
     slug = models.SlugField(unique=True, blank=True)
 
@@ -57,6 +61,7 @@ class UploadedFile(models.Model):
         ('other', 'Other'),
     ]
 
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='documents', null=True)
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='files/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
