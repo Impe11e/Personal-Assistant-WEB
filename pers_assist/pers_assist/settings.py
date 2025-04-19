@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pers_assist_app',
+    "pers_assist_app",
+    "users",
+    "news",
     'cloudinary',
     'cloudinary_storage',
 ]

@@ -1,11 +1,14 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import CharField, TextField
+from django.utils.text import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from cloudinary_storage.storage import MediaCloudinaryStorage, RawMediaCloudinaryStorage
-from django.core.files.uploadedfile import UploadedFile as DjangoUploadedFile
 
 
 # TODO: try without null, just blank
 class Contact(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts', null=True)
     name = models.CharField(max_length=50, null=False)
     surname = models.CharField(max_length=150, blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
@@ -19,6 +22,36 @@ class Contact(models.Model):
         return self.name
 
 
+# NOTES
+class Note(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes', null=True)
+    title = CharField(max_length=100, blank=True, null=False)
+    text = TextField(blank=True, null=True)  # like just for reminders, where we dont need more text than title
+
+    color = CharField(blank=True, null=True)
+    tags = models.ManyToManyField('Tag')
+
+    # owner = ForeignKey(User, on_delete=CASCADE)
+
+    def __str__(self):
+        tags = ', '.join([tag.tag_name for tag in self.tags.all()])
+        return f'{self.title} | {tags or "No Tags"}'
+
+
+class Tag(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tags', null=True)
+    tag_name = CharField(max_length=50, blank=True, null=False, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.tag_name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.tag_name
+
+
 class UploadedFile(models.Model):
     CATEGORY_CHOICES = [
         ('image', 'Image'),
@@ -28,6 +61,7 @@ class UploadedFile(models.Model):
         ('other', 'Other'),
     ]
 
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='documents', null=True)
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='files/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -35,7 +69,7 @@ class UploadedFile(models.Model):
     cloudinary_public_id = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.id:  # Если объект новый (еще не сохранен)
+        if not self.id:
             if not self.category or self.category == 'other':
                 extension = self.file.name.split('.')[-1].lower()
                 if extension in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']:
@@ -54,11 +88,9 @@ class UploadedFile(models.Model):
                     self.category = 'other'
                     self.file.storage = RawMediaCloudinaryStorage()
             else:
-                # Устанавливаем хранилище в зависимости от категории
                 if self.category == 'image':
                     self.file.storage = MediaCloudinaryStorage()
                 else:
-                    # Для всех остальных типов файлов (включая видео)
                     self.file.storage = RawMediaCloudinaryStorage()
 
         super().save(*args, **kwargs)

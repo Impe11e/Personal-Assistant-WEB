@@ -9,10 +9,24 @@
 <main class="container">
 
     <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+
+        {% if user.is_authenticated %}
         <ul>
-            <li><a href="{% url 'pers_assist_app:contacts' %}" role="button">My contacts</a></li>
-            <li><a href="{% url 'pers_assist_app:documents' %}" role="button">My documents</a></li>
+            <li><a href="{% url 'pers_assist_app:contacts' %}" role="button">Contacts</a></li>
+            <li><a href="{% url 'pers_assist_app:notes' %}" role="button">Notes</a></li>
+            <li><a href="{% url 'pers_assist_app:documents' %}" role="button">File Manager</a></li>
+            <li><a href="{% url 'news:news' %}" role="button">Daily news</a></li>
         </ul>
+    <ul>
+        <li>Welcome <b>{{ user.username }}!</b></li>
+        <li class="nav-item"><a href="{% url 'users:logout' %}" class="nav-link link-dark">Logout</a>
+    </ul>
+    {% else %}
+    <ul>
+        <li><a href="{% url 'users:signup' %}" role="button">Sign Up</a></li>
+        <li><a href="{% url 'users:signin' %}" role="button">Login</a></li>
+    </ul>
+    {% endif %}
     </nav>
 
 </main>

@@ -1,0 +1,8 @@
+.user-from{
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Занимает 100% высоты экрана */
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: center; /* Выравнивание по горизонтали */
+}

@@ -1,0 +1,17 @@
+{% extends "pers_assist_app/base.html" %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <div>
+        {{ form.tag_name.label_tag }}
+        {{ form.tag_name }}
+        {{ form.tag_name.errors }}
+    </div>
+
+    <button type="submit">Создать тег</button>
+</form>
+
+{% endblock %}
