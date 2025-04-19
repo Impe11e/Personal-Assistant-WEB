@@ -39,7 +39,7 @@ def contact_create(request):
 def contact_detail(request, contact_id):
     back_url = reverse('pers_assist_app:contacts')
     contact = get_object_or_404(Contact, pk=contact_id)
-    return render(request, 'pers_assist_app/contact_detail .html', {"contact": contact, "back_url": back_url})
+    return render(request, 'pers_assist_app/contact_detail.html', {"contact": contact, "back_url": back_url})
 
 
 def contact_delete(request, contact_id):

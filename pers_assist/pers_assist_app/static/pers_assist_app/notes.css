@@ -12,7 +12,7 @@ div a {
 }
 
 body {
-    background-image: url(images/clen-16-2.png);
+    background-image: url('../pers_assist_app/images/clen-16-2.png');
     background-repeat: repeat;
     background-size: 20%;
     /* background-attachment: fixed; */
@@ -696,7 +696,7 @@ footer {
 }
 
 .detail-block {
-    border: 1px solid rgb(219, 130, 157);
+    background-color: white;
     border-radius: 25px;
     padding: 30px;
 
@@ -707,6 +707,10 @@ footer {
     flex-direction: column;
     gap: 30px;
     justify-content: space-between;
+
+    box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.11);
+    -webkit-box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.11);
+    -moz-box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.11);
 }
 .detail-block h1{
     align-self: center;
