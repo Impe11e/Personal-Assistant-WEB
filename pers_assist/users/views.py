@@ -9,7 +9,6 @@ from django.urls import reverse_lazy
 
 from .forms import RegisterForm, LoginForm
 
-
 @login_required(login_url='/signin/')
 def dashboard(request):
     return render(request, 'users/dashboard.html', {
@@ -54,7 +53,7 @@ def signinuser(request):
 @login_required(login_url='/signin/')
 def logoutuser(request):
     logout(request)
-    return redirect(to='users:signin')
+    return redirect(to='news:news')
 
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):

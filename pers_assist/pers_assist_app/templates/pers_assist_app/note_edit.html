@@ -1,0 +1,37 @@
+{% extends "pers_assist_app/base.html" %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'pers_assist_app:note_edit' note_id=note.id %}">
+    {% csrf_token %}
+
+    <div>
+        {{ form.title.label_tag }}
+        {{ form.title }}
+        {{ form.title.errors }}
+    </div>
+
+    <div>
+        {{ form.text.label_tag }}
+        {{ form.text }}
+        {{ form.text.errors }}
+    </div>
+
+        <div>
+        {{ form.color.label_tag }}
+        {{ form.color }}
+        {{ form.color.errors }}
+    </div>
+
+    <div>
+        {{ form.tags.label_tag }}
+        {{ form.tags }}
+        {{ form.tags.errors }}
+    </div>
+
+    <a href="{% url 'pers_assist_app:tag_create' %}">need more tags?</a>
+
+    <button type="submit">Обновить</button>
+</form>
+
+{% endblock %}

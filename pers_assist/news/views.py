@@ -32,8 +32,6 @@ def get_data_from_apis(urls):
     results = [fetch_data(url) for url in urls]
     return results
 
-
-@login_required(login_url='/signin/')
 def news_view(request):
     urls = [PRIVAT_URL, NEWSAPI_URL]
     raw_data = get_data_from_apis(urls)

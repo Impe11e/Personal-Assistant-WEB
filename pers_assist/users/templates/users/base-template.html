@@ -22,29 +22,33 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                {% if user.is_authenticated %}
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'contacts:main' %}">Contacts</a>
+                            <a class="nav-link" aria-current="page" href="{% url 'pers_assist_app:contacts' %}">Contacts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'note-list' %}">Notes</a>
+                            <a class="nav-link" href="{% url 'pers_assist_app:notes' %}">Notes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'filemanager:uploaded_files' %}">File Manager</a>
+                            <a class="nav-link" href="{% url 'pers_assist_app:documents' %}">File Manager</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'news:news' %}">Daily News</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        {% if user.is_authenticated %}
                         <li class="nav-item"><span class="nav-link link-dark">Welcome, {{ user.username }}!</span></li>
-                        <li class="nav-item"><a href="{% url 'users:logout' %}" class="nav-link link-dark">Logout</a>
-                        </li>
-                        {% endif %}
+                        <li class="nav-item"><a href="{% url 'users:logout' %}" class="nav-link link-dark">Logout</a></li>
                     </ul>
                 </div>
+                {% else %}
+                <ul>
+                    <li><a href="{% url 'users:signup' %}" role="button">Sign Up</a></li>
+                    <li><a href="{% url 'users:signin' %}" role="button">Login</a></li>
+                </ul>
+                {% endif %}
             </div>
         </nav>
     </div>
