@@ -1,5 +1,5 @@
 from django.forms import ModelForm, CharField, TextInput, DateInput, EmailField, DateField, Textarea
-from .models import Contact, Note, Tag
+from .models import Contact, UploadedFile, Note, Tag
 from django import forms
 
 
@@ -25,7 +25,6 @@ class ContactEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['birthday'].widget = DateInput(attrs={'type': 'date'})
-
 
 # NOTES
 class NoteCreateForm(ModelForm):
@@ -73,7 +72,7 @@ class NoteEditForm(ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # или SelectMultiple, если хочешь dropdown
+        widget=forms.CheckboxSelectMultiple,
         required=False
     )
 
@@ -90,3 +89,10 @@ class TagCreateForm(ModelForm):
     class Meta:
         model = Tag
         fields = ['tag_name']
+
+
+# DOCUMENTS
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = UploadedFile
+        fields = ['title', 'file']

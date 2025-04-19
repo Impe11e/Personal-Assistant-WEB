@@ -1,11 +1,12 @@
+from django.http import Http404, FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from .forms import ContactForm, ContactEditForm, NoteCreateForm, TagCreateForm, NoteEditForm
-from .models import Contact, Note, Tag
+from .forms import ContactForm, ContactEditForm, NoteCreateForm, TagCreateForm, NoteEditForm, FileUploadForm
 from django.db.models import Q
-from datetime import timedelta, date
+from .models import Contact, UploadedFile, Note, Tag
 
+from datetime import timedelta, date
 
 
 def main(request):
@@ -14,6 +15,7 @@ def main(request):
         'contacts': contacts,
     })
 
+
 def contacts(request):
     contacts = Contact.objects.all()
     return render(request, 'pers_assist_app/contacts.html', {
@@ -21,6 +23,14 @@ def contacts(request):
     })
 
 
+def documents(request):
+    documents = UploadedFile.objects.all()
+    return render(request, 'pers_assist_app/documents.html', {
+        'documents': documents,
+    })
+
+
+# CONTACTS
 def contact_create(request):
     back_url = reverse('pers_assist_app:contacts')
 
@@ -33,7 +43,6 @@ def contact_create(request):
             return render(request, 'pers_assist_app/contact_create.html', {'form': form, 'back_url': back_url})
 
     return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(), 'back_url': back_url})
-
 
 
 def contact_detail(request, contact_id):
@@ -166,11 +175,9 @@ def search_note_by_query(request):
     return render(request, 'pers_assist_app/notes.html', {'notes': all_notes, 'tags': all_tags})
 
 
-
-
 # TAGS
 def create_tag(request):
-    back_url = reverse('pers_assist_app:tag_create')
+    back_url = reverse('pers_assist_app:note_create')
 
     if request.method == 'POST':
         form = TagCreateForm(request.POST)
@@ -182,3 +189,48 @@ def create_tag(request):
 
     return render(request, 'pers_assist_app/tag_create.html', {'form': TagCreateForm(), 'back_url': back_url})
 
+# DOCUMENTS
+def upload_document(request):
+    back_url = reverse('pers_assist_app:documents')
+
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(back_url)
+    else:
+        form = FileUploadForm()
+
+    return render(request, 'pers_assist_app/docs_upload.html', {'form': form, 'back_url': back_url})
+
+
+# TODO: convert to cloud storage
+def document_download(request, document_id):
+    try:
+        document = UploadedFile.objects.get(id=document_id)
+        return FileResponse(document.file.open('rb'), as_attachment=True, filename=document.file.name)
+    except UploadedFile.DoesNotExist:
+        raise Http404("Document not found")
+
+
+def document_delete(request, document_id):
+    back_url = reverse('pers_assist_app:documents')
+    document = get_object_or_404(UploadedFile, pk=document_id)
+    if request.method == 'POST':
+        document.delete()
+        return redirect('pers_assist_app:documents')
+
+    return render(request, 'pers_assist_app/document_confirm_delete.html', {"document": document, "back_url": back_url})
+
+
+def search_documents(request):
+    query = request.GET.get('search_item', '')
+    if query:
+        docuements = UploadedFile.objects.filter(title__icontains=query)
+    else:
+        docuements = UploadedFile.objects.all()
+
+    return render(request, 'pers_assist_app/documents.html', {
+        'documents': docuements,
+        'search_item': query,
+    })
