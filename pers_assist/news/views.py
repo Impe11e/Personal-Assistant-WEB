@@ -36,30 +36,38 @@ def news_view(request):
     urls = [PRIVAT_URL, NEWSAPI_URL]
     raw_data = get_data_from_apis(urls)
     news_articles = raw_data[1]["articles"][::-1]
-    view_data = {'Date': raw_data[0]['date'],
-                 'Bank': 'PrivatBank',
-                 'Exchange_rate': [{'currency': 'USD',
-                                    'sale': next(rate["saleRate"] for rate in raw_data[0]["exchangeRate"] if
-                                                 rate["currency"] == 'USD'),
-                                    'purchase': next(rate["purchaseRate"] for rate in raw_data[0]["exchangeRate"] if
-                                                     rate["currency"] == 'USD')},
-                                   {'currency': 'EUR',
-                                    'sale': next(rate["saleRate"] for rate in raw_data[0]["exchangeRate"] if
-                                                 rate["currency"] == 'EUR'),
-                                    'purchase': next(rate["purchaseRate"] for rate in raw_data[0]["exchangeRate"] if
-                                                     rate["currency"] == 'EUR')},
-                                   {'currency': 'PLN',
-                                    'sale': next(rate["saleRate"] for rate in raw_data[0]["exchangeRate"] if
-                                                 rate["currency"] == 'PLN'),
-                                    'purchase': next(rate["purchaseRate"] for rate in raw_data[0]["exchangeRate"] if
-                                                     rate["currency"] == 'PLN')}],
-                 'News': [{"source": news_articles[i]["source"]["name"],
-                           "author": news_articles[i]["author"],
-                           "title": news_articles[i]["title"],
-                           "description": news_articles[i]["description"],
-                           "link_to_source": news_articles[i]["url"],
-                           "publishedAt": news_articles[i]["publishedAt"]} for i in range(NEWS_TO_SHOW)]
-                 }
+    view_data = {
+        'Date': raw_data[0]['date'],
+        'Bank': 'PrivatBank',
+        'Exchange_rate': [
+            {
+                'currency': 'USD',
+                'sale': next((rate.get("saleRate") for rate in raw_data[0]["exchangeRate"] if rate.get("currency") == 'USD'), None),
+                'purchase': next((rate.get("purchaseRate") for rate in raw_data[0]["exchangeRate"] if rate.get("currency") == 'USD'), None)
+            },
+            {
+                'currency': 'EUR',
+                'sale': next((rate.get("saleRate") for rate in raw_data[0]["exchangeRate"] if rate.get("currency") == 'EUR'), None),
+                'purchase': next((rate.get("purchaseRate") for rate in raw_data[0]["exchangeRate"] if rate.get("currency") == 'EUR'), None)
+            },
+            {
+                'currency': 'PLN',
+                'sale': next((rate.get("saleRate") for rate in raw_data[0]["exchangeRate"] if rate.get("currency") == 'PLN'), None),
+                'purchase': next((rate.get("purchaseRate") for rate in raw_data[0]["exchangeRate"] if rate.get("currency") == 'PLN'), None)
+            }
+        ],
+        'News': [
+            {
+                "source": article["source"]["name"],
+                "author": article["author"],
+                "title": article["title"],
+                "description": article["description"],
+                "link_to_source": article["url"],
+                "publishedAt": article["publishedAt"]
+            }
+            for article in news_articles[:NEWS_TO_SHOW]
+        ]
+    }
 
     return render(request, 'news/index2.html',
                   context={'page_title': 'News and Statistics', 'data': view_data})
