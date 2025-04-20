@@ -67,6 +67,7 @@ class UploadedFile(models.Model):
     file = CloudinaryField(resource_type='raw')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='other')
+    cloudinary_public_id = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -94,6 +95,10 @@ class UploadedFile(models.Model):
                     self.file.storage = RawMediaCloudinaryStorage()
 
         super().save(*args, **kwargs)
+    
+        if not self.cloudinary_public_id and hasattr(self.file, 'public_id'):
+            self.cloudinary_public_id = self.file.public_id
+            super().save(update_fields=['cloudinary_public_id'])
 
     def __str__(self):
         return self.title

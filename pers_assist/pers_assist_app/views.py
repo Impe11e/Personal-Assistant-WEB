@@ -6,6 +6,9 @@ from django.db.models import Q
 from .forms import ContactForm, ContactEditForm, NoteCreateForm, TagCreateForm, NoteEditForm, FileUploadForm
 from .models import Contact, UploadedFile, Note, Tag
 from datetime import timedelta, date
+import cloudinary.uploader
+import cloudinary
+from django.contrib import messages  # если хочешь показать сообщения
 
 
 @login_required(login_url='/signin/')
@@ -28,6 +31,7 @@ def contacts(request):
 def documents(request):
     category = request.GET.get('category')
     documents = UploadedFile.objects.filter(owner=request.user)
+
     if category:
         documents = documents.filter(category=category)
 
@@ -260,10 +264,17 @@ def document_download(request, document_id):
 def document_delete(request, document_id):
     back_url = reverse('pers_assist_app:documents')
     document = get_object_or_404(UploadedFile, pk=document_id, owner=request.user)
-    
+
     if request.method == 'POST':
+        try:
+            cloudinary.uploader.destroy(document.file.public_id, invalidate=True)
+        except Exception as e:
+            print(f"An error occurred while deleting from Cloudinary: {e}")
+        
         document.delete()
         return redirect('pers_assist_app:documents')
 
-    return render(request, 'pers_assist_app/document_confirm_delete.html', {"document": document, "back_url": back_url})
-
+    return render(request, 'pers_assist_app/document_confirm_delete.html', {
+        "document": document,
+        "back_url": back_url
+    })
