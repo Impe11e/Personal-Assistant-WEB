@@ -98,7 +98,6 @@ header {
 }
 .kyky a {
     color: rgb(173, 84, 111);
-    text-decoration: underline rgb(173, 84, 111);
 
     transition: text-shadow 200ms linear;
 }

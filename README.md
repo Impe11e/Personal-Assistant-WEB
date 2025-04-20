@@ -11,6 +11,7 @@ This assistant is designed to keep everything important - people, thoughts, file
 | [PostgreSQL](https://www.postgresql.org/)                | Database          |
 | [psycopg2](https://www.psycopg.org/)                  | PostgreSQL-driver |
 | [Pillow](https://pillow.readthedocs.io/en/stable/)                    | Image-processing  |
+| [Cloudinary](https://cloudinary.com/)                    | Media hosting  |
 
 ## ✨ Functions
 
@@ -40,11 +41,9 @@ This assistant is designed to keep everything important - people, thoughts, file
 - Filter files by selected category
 
 ### 📰 Daily News Digest
-- Receive a short daily news summary by chosen topic (finance, sports, politics, weather)
-
 - Gather information from multiple news sources
 
-- Display headlines, currency exchange rates, event results, etc.
+- Display up-to-date currency exchange rates
 
 ## 🚀 Installation
 
@@ -55,6 +54,7 @@ This assistant is designed to keep everything important - people, thoughts, file
 <pre lang="markdown"> poetry install </pre>
 
 3. Create and setup the .env file, fill in the information you need
+<pre lang="markdown"> cp .env.example .env </pre>
 
 4. Run the application.
 <pre lang="markdown"> python manage.py runserver </pre>

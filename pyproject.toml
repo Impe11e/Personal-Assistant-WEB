@@ -12,6 +12,9 @@ django = "^5.1.6"
 django-environ = "^0.12.0"
 pillow = "^11.1.0"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "^8.1.0"}
+cloudinary = "^1.44.0"
+django-cloudinary-storage = "^0.3.0"
+django-widget-tweaks = "^1.5.0"
 
 
 [build-system]

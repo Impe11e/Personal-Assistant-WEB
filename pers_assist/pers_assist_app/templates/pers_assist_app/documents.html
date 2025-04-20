@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Documents</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
+</head>
+<body>
+<main class="container">
+
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+        <ul>
+            <li><a href="{% url 'pers_assist_app:main' %}" role="button" class="secondary" style="flex-shrink: 0; width: 130px;">Main menu</a></li>
+            <li><a href="{% url 'pers_assist_app:upload_document' %}" role="button">Upload document</a></li>
+        </ul>
+    </nav>
+
+    <form method="get" style="margin-bottom: 30px;">
+        <label for="category">Filter by category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for key, name in categories.items %}
+                <option value="{{ key }}" {% if selected_category == key %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if documents %}
+        {% for document in documents %}
+            <ul>
+                <li>
+                    <a href="{% url 'pers_assist_app:document_download' document.id %}" class="button" role="button">
+                        <b>{{ document.title }}</b> <small>({{ document.get_category_display }})</small>
+                    </a>
+                    <a href="{% url 'pers_assist_app:document_delete' document.id %}" role="button" class="outline">Delete</a>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>No documents found.</p>
+    {% endif %}
+
+</main>
+</body>
+</html>

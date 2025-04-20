@@ -36,8 +36,8 @@ header {
     margin-bottom: 50px;
 
     display: flex;
-    justify-content: space-between; /* Распределяем элементы по краям */
-    align-items: center; /* Выравниваем элементы по вертикали */
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
 
     height: 75px;
@@ -53,14 +53,14 @@ header {
 }
 
 .logo-container {
-    flex-grow: 1; /* Разрешаем логотипу занимать доступное пространство */
+    flex-grow: 1;
     display: flex;
     align-items: center;
-    justify-content: center; /* Выравниваем логотип по центру */
+    justify-content: center;
     height: 80px;
 
-    position: absolute; /* Абсолютное позиционирование */
-    left: 50%; /* Смещаем логотип на 50% от левого края */
+    position: absolute;
+    left: 50%;
     transform: translateX(-50%);
 }
 .logo-container img{
@@ -72,18 +72,23 @@ header {
 }
 
 
-.cart-container {
-    margin-left: auto; /* Перемещаем корзину вправо */
+.nav-buttons {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.nav-buttons a {
+    color: rgb(173, 84, 111);
+
+    transition: text-shadow 200ms linear;
+}
+.nav-buttons a:hover {
+    text-shadow: 0px 0px 5px rgba(173, 84, 111, 0.5);
 }
 
-.cart-container img {
-    height: 50px; /* Установите нужную высоту для изображений */
-    width: 50px;
-
-    transition: transform 500ms
-}
-.cart-container img:hover {
-    transform: scale(1.05);
+.divider {
+    color: rgba(173, 84, 111, 0.5);
 }
 
 
@@ -221,6 +226,7 @@ header {
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 15px;
 
     box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.2);
@@ -579,7 +585,6 @@ footer {
     gap: 10px;
 
     max-width: 250px;
-    width: 250px;
 }
 
 .tag {
@@ -729,3 +734,23 @@ footer {
 
     border-radius: 25px;
 }
+
+.kyky {
+    color: rgb(173, 84, 111);
+    font-weight: bold;
+}
+.kyky a {
+    color: rgb(173, 84, 111);
+
+    transition: text-shadow 200ms linear;
+}
+.kyky a:hover {
+    text-shadow: 0px 0px 5px rgba(173, 84, 111, 0.5);
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
