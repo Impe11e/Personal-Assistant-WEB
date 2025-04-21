@@ -1,37 +1,43 @@
-{% extends "pers_assist_app/base.html" %}
-
-{% block content %}
-
-<form method="POST" action="{% url 'pers_assist_app:note_edit' note_id=note.id %}">
-    {% csrf_token %}
-
-    <div>
-        {{ form.title.label_tag }}
-        {{ form.title }}
-        {{ form.title.errors }}
-    </div>
-
-    <div>
-        {{ form.text.label_tag }}
-        {{ form.text }}
-        {{ form.text.errors }}
-    </div>
-
-        <div>
-        {{ form.color.label_tag }}
-        {{ form.color }}
-        {{ form.color.errors }}
-    </div>
-
-    <div>
-        {{ form.tags.label_tag }}
-        {{ form.tags }}
-        {{ form.tags.errors }}
-    </div>
-
-    <a href="{% url 'pers_assist_app:tag_create' %}">need more tags?</a>
-
-    <button type="submit">Обновить</button>
-</form>
-
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Assistant | Edit Note</title>
+    <link rel="icon" href="images/kof_logo.ico" type="image/x-icon">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/create_forms_style.css' %}">
 {% endblock %}
+
+<body>
+{% block content %}
+    <div class="main-container">
+        <div class="form">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label>Note Title</label>
+                {{ form.title }}
+
+                <label>Text</label>
+                {{ form.text }}
+
+                <label>Color</label>
+                {{ form.color }}
+
+                <label>Tags</label>
+                {{ form.tags }}
+
+                <div>
+                    {{ form.errors }}
+                </div>
+
+                <a class="more-tags" href="{% url 'pers_assist_app:tag_create' %}">Need more tags?</a>
+
+                <button class="reg-button" type="submit">Update!</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

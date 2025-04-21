@@ -9,13 +9,14 @@ from django.urls import reverse_lazy
 
 from .forms import RegisterForm, LoginForm
 
+
 @login_required(login_url='/signin/')
 def dashboard(request):
     return render(request, 'users/dashboard.html', {
         'page_title': 'Dashboard'
     })
 
-# Create your views here.
+
 def signupuser(request):
     if request.user.is_authenticated:
         return redirect(to='users:dashboard')

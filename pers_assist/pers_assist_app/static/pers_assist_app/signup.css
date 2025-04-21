@@ -98,6 +98,7 @@ header {
 }
 .kyky a {
     color: rgb(173, 84, 111);
+    text-decoration: underline rgb(173, 84, 111);
 
     transition: text-shadow 200ms linear;
 }
@@ -106,43 +107,61 @@ header {
 }
 
 
-
-
 .main-container {
-    background-color: white;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 
+    width: 500px;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
+    width: 400px;
+
+    background-color: white;
     border-radius: 25px;
+
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+    padding-left: 35px;
+    padding-right: 35px;
+
+
 
     box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.2);
     -webkit-box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.2);
     -moz-box-shadow: -3px 6px 24px -9px rgba(0,0,0,0.2);
-
 }
-.form {
+.form form{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 
-    width: 100%;
+    width: 100%
 }
-.form-inner-block{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+.form form a {
+    margin-top: 20px;
+    color: rgb(193 32 75);
 
-    gap: 15px;
+    transition: text-shadow 200ms linear;
+}
+.form form a:hover {
+    text-shadow: -0px 0px 5px rgba(193,32,75,0.4);
 }
 
 .input {
+margin-top: 5px;
+margin-bottom: 5px;
+margin-right: 35px;
+margin-left: 35px;
+
 height: 35px;
 width: 100%;
-
-/* margin: 15px 0px; */
 
 border-radius: 10px;
 border: 1px solid rgb(100, 100, 100);
@@ -158,6 +177,11 @@ font-size: 12px;
 
 
 .input:focus {
+margin-top: 5px;
+margin-bottom: 5px;
+margin-right: 35px;
+margin-left: 35px;
+
 height: 35px;
 border-radius: 10px;
 border: 1px solid rgb(194,104,131);
@@ -183,7 +207,7 @@ background-color: white;
 .my-select {
     font-size: 13px;
     color: rgb(100, 100, 100) ;
-}
+    }
 
 .my-select option {
 margin-top: 5px;
@@ -202,7 +226,7 @@ padding-left: 10px;
 transition: box-shadow 200ms linear, border 200ms linear;
 }
 
-.submit-button {
+.reg-button {
 color: white;
 font-size: 14px;
 border-radius: 10px;
@@ -213,11 +237,13 @@ width: 100%;
 height: 35px;
 background-color: rgb(173, 84, 111);
 
+margin-top: 30px;
+
 border: none;
 
 transition: background-color 500ms, color 500ms, box-shadow 500ms, transform 500ms;
 }
-.submit-button:hover {
+.reg-button:hover {
 color: white;
 font-size: 14px;
 background-color: rgb(219, 130, 157);
@@ -227,53 +253,4 @@ box-shadow: 0px 4px 28px -4px rgba(194,104,131,1);
 -moz-box-shadow: 0px 4px 28px -4px rgba(194,104,131,1);
 
 transform: scale(1.005);
-}
-
-.search-row {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-}
-
-.show-all-button {
-    color: rgb(173, 84, 111);
-    font-size: 14px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    min-width: 35px;
-    height: 35px;
-    border: 1px solid rgb(173, 84, 111);
-    background-color: white;
-
-    transition: background-color 500ms, color 500ms, box-shadow 500ms, transform 500ms;
-}
-.show-all-button:hover {
-    color: white;
-    border: 1px solid rgb(173, 84, 111);
-    background-color: rgb(173, 84, 111);
-}
-
-
-.item-desc p{
-    color: rgb(79, 79, 79);
-}
-
-.order-item {
-    width: 50%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-.order-item img{
-    height: 200px;
-    margin-right: 35px;
-}
-
-.search-tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
 }

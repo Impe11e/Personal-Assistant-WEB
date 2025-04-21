@@ -1,28 +1,49 @@
-{% extends "pers_assist_app/base.html" %}
-{% block content %}
-
-<h1>
-  {{ contact.name }}{% if contact.surname %} {{ contact.surname }}{% endif %}
-</h1>
-
-{% if contact.address %}
-<p><strong>Address:</strong> <b>{{ contact.address }}</b></p>
-{% endif %}
-
-{% if contact.phone %}
-<p><strong>Phone:</strong> <kbd>{{ contact.phone }}</kbd></p>
-{% endif %}
-
-{% if contact.email %}
-<p><strong>Email:</strong> <kbd>{{ contact.email }}</kbd></p>
-{% endif %}
-
-{% if contact.birthday %}
-<p><strong>Birthday:</strong> <kbd>{{ contact.birthday }}</kbd></p>
-{% endif %}
-
-{% if contact.description %}
-<p><strong>Description:</strong> <b>{{ contact.description }}</b></p>
-{% endif %}
-
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Contact {{ contact.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/forms_style.css' %}">
 {% endblock %}
+
+<body>
+{% block content %}
+    <div class="detail-block">
+        <h1>
+            {{ contact.name }}{% if contact.surname %} {{ contact.surname }}{% endif %}
+        </h1>
+
+        {% if contact.address %}
+        <div>
+            <h3><strong>Address:</strong></h3><kbd>{{ contact.address }}</kbd>
+        </div>
+        {% endif %}
+
+        {% if contact.phone %}
+        <div>
+            <h3><strong>Phone:</strong></h3><kbd>{{ contact.phone }}</kbd>
+        </div>
+        {% endif %}
+
+        {% if contact.email %}
+        <div>
+            <h3><strong>Email:</strong></h3><kbd>{{ contact.email }}</kbd>
+        </div>
+        {% endif %}
+
+        {% if contact.birthday %}
+        <div>
+            <h3><strong>Birthday:</strong></h3><kbd>{{ contact.birthday }}</kbd>
+        </div>
+        {% endif %}
+
+        {% if contact.description %}
+        <div>
+            <h3><strong>Description:</strong></h3><kbd>{{ contact.description }}</kbd>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+</body>

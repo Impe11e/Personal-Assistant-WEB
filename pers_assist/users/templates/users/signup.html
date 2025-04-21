@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'users/base-sign-forms.html' %}
 
 {% block form %}
@@ -35,4 +36,47 @@
         <p class="m-0">If you already have profile, please <a href="{% url 'users:signin' %}">sign in</a></p>
     </div>
 </div>
+=======
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Sign up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/signup.css' %}">
+{% endblock %}
+
+<body>
+{% block content %}
+    <div class="main-container">
+        <div class="form">
+            <form action="{% url 'users:signup' %}" method="post">
+
+                {% csrf_token %}
+
+                <label>Username</label>
+                {{ form.username }}
+
+                <label>E-mail</label>
+                {{ form.email }}
+
+                <label>Password</label>
+                {{ form.password1 }}
+
+                <label>Password 2 </label>
+                {{ form.password2 }}
+
+                <div>
+                    {{ form.errors }}
+                </div>
+
+                <a href="{% url 'users:signin' %}">Allready have accaunt?</a>
+
+                <button class="reg-button" type="submit">Register!</button>
+            </form>
+        </div>
+    </div>
+</body>
+>>>>>>> front_new
 {% endblock %}

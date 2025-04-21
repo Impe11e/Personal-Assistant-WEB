@@ -50,7 +50,7 @@ def contact_create(request):
     back_url = reverse('pers_assist_app:contacts')
 
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = ContactForm(request.POST, user=request.user)
         if form.is_valid():
             contact = form.save(commit=False)
             contact.owner = request.user
@@ -59,7 +59,8 @@ def contact_create(request):
         else:
             return render(request, 'pers_assist_app/contact_create.html', {'form': form, 'back_url': back_url})
 
-    return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(), 'back_url': back_url})
+
+    return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(user=request.user), 'back_url': back_url})
 
 
 @login_required(login_url='/signin/')
@@ -85,15 +86,32 @@ def contact_edit(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id, owner=request.user)
     
     if request.method == 'POST':
-        form = ContactEditForm(request.POST, instance=contact)
+        print(f"POST data: {request.POST}")
+        print(f"Phone from POST: {request.POST.get('phone')}")
+        
+        form = ContactEditForm(request.POST, instance=contact, user=request.user)
+        
+        print(f"Raw phone from POST: {request.POST.get('phone')}")
+        
         if form.is_valid():
-            form.save()
-            return redirect('pers_assist_app:contact_detail', contact_id=contact.id)
+            print(f"Form is valid, phone: {form.cleaned_data.get('phone')}")
+            try:
+                print(f"Validated phone: {form.cleaned_data.get('phone')}")
+                
+                contact = form.save(commit=False)
+                contact.phone = form.cleaned_data['phone']
+                print(f"Before save, phone: {contact.phone}")
+                contact.save()
+                return redirect('pers_assist_app:contact_detail', contact_id=contact.id)
+            except Exception as e:
+                print(f"Error saving form: {type(e)}: {str(e)}")
+        else:
+            print(f"Form errors: {form.errors}")
     else:
-        form = ContactEditForm(instance=contact)
+        form = ContactEditForm(instance=contact, user=request.user)
 
     return render(request, 'pers_assist_app/contact_edit.html', {'form': form, 'contact': contact, 'back_url': back_url})
-
+    
 
 @login_required(login_url='/signin/')
 def search_contacts(request):
@@ -123,16 +141,18 @@ def search_birthdays(request):
         days_ahead = 7
 
     today = date.today()
-    upcoming_date = today + timedelta(days=days_ahead)
+    upcoming_dates = [(today + timedelta(days=i)) for i in range(days_ahead + 1)]
+    upcoming_month_day = [(d.month, d.day) for d in upcoming_dates]
 
-    upcoming_birthday_contacts = Contact.objects.filter(
-        birthday__gte=today,
-        birthday__lte=upcoming_date,
-        owner=request.user
-    ).exclude(birthday=None)
+    contacts = Contact.objects.exclude(birthday=None).filter(owner=request.user)
+    birthday_contacts = []
+
+    for contact in contacts:
+        if (contact.birthday.month, contact.birthday.day) in upcoming_month_day:
+            birthday_contacts.append(contact)
 
     return render(request, 'pers_assist_app/contacts.html', {
-        'contacts': upcoming_birthday_contacts,
+        'contacts': birthday_contacts,
         'days_ahead': days_ahead,
     })
 
@@ -278,3 +298,10 @@ def document_delete(request, document_id):
         "document": document,
         "back_url": back_url
     })
+
+    if request.method == 'POST':
+        document.delete()
+        return redirect('pers_assist_app:documents')
+
+    return render(request, 'pers_assist_app/document_confirm_delete.html', {"document": document, "back_url": back_url})
+

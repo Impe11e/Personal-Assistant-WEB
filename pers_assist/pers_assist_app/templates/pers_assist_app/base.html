@@ -1,20 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Contact form</title>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'pers_assist_app/style.css' %}">
+    {% block head %}
+
+    {% endblock %}
 </head>
 <body>
-<main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-            <li><a href="{{ back_url }}" role="button"> Go back to the main page </a></li>
-        </ul>
-    </nav>
-    {% block content %} {% endblock %}
-</main>
+    <header>
+        <a class="logo-container" href="{% url 'pers_assist_app:main' %}">
+            {% load static %}
+            <img src="{% static 'pers_assist_app/images/aidly_logo.png' %}">
+        </a>
+        <div class="kyky">
+        {% if user.is_authenticated %}
+            <p>Hi, {{ user.username }}!</p>
+
+            <a href="{% url 'users:logout' %}" class="logout">
+                <?xml version="1.0" ?><svg fill="none" height="22" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M13 12H22M22 12L18.6667 8M22 12L18.6667 16" stroke="rgb(173, 84, 111)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M14 7V5.1736C14 4.00352 12.9999 3.08334 11.8339 3.18051L3.83391 3.84717C2.79732 3.93356 2 4.80009 2 5.84027V18.1597C2 19.1999 2.79733 20.0664 3.83391 20.1528L11.8339 20.8195C12.9999 20.9167 14 19.9965 14 18.8264V17" stroke="rgb(173, 84, 111)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+                Sign out
+            </a>
+        {% else %}
+            <p>U're not logged in</p>
+            <a href="{% url 'users:signin' %}">Sign in</a>
+        {% endif %}
+        </div>
+
+        <div class="nav-buttons">
+            <a href="{% url 'pers_assist_app:contacts' %}">My contacts</a>
+            <span class="divider">|</span>
+            <a href="{% url 'pers_assist_app:notes' %}">My notes</a>
+            <span class="divider">|</span>
+            <a href="{% url 'pers_assist_app:documents' %}">File manager</a>
+        </div>
+    </header>
+    {% block content %}
+
+    {% endblock %}
 </body>
-</html>

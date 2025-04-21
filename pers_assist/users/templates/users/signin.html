@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'users/base-sign-forms.html' %}
 
 {% block form %}
@@ -33,3 +34,45 @@
     </div>
 </div>
 {% endblock %}
+=======
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Sign in</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/signup.css' %}">
+{% endblock %}
+
+<body>
+{% block content %}
+
+    <div class="main-container">
+        <div class="form">
+            <form method="post" action="{% url 'users:signin' %}">
+                {% csrf_token %}
+
+                <label>Username</label>
+                {{ form.username }}
+
+                <label>Password</label>
+                {{ form.password }}
+
+                <div>
+                    {{ form.errors }}
+                </div>
+
+                <a href="{% url 'users:signup' %}">Haven't an accaunt yet? Lets create now!</a>
+                <a href="{% url 'users:password_reset' %}">Forgot password?</a>
+
+                <button class="reg-button" type="submit">Login!</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="swiper.js"></script>
+    <script src="jabascript_main.js"></script>
+{% endblock %}
+</body>
+>>>>>>> front_new

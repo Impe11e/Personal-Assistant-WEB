@@ -2,7 +2,7 @@ from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CharField, TextField
-from django.utils.text import slugify
+from slugify import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from cloudinary_storage.storage import MediaCloudinaryStorage, RawMediaCloudinaryStorage
 
@@ -12,11 +12,19 @@ class Contact(models.Model):
     name = models.CharField(max_length=50, null=False)
     surname = models.CharField(max_length=150, blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
-    phone = PhoneNumberField(unique=True)
+    phone = PhoneNumberField(unique=False)
     email = models.EmailField(blank=True, null=True, unique=False)
     birthday = models.DateField(blank=True, null=True)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['owner', 'phone'], 
+                name='unique_owner_phone'
+            )
+        ]
 
     def __str__(self):
         return self.name
@@ -26,7 +34,7 @@ class Contact(models.Model):
 class Note(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes', null=True)
     title = CharField(max_length=100, blank=True, null=False)
-    text = TextField(blank=True, null=True)  # like just for reminders, where we dont need more text than title
+    text = TextField(blank=True, null=True)
 
     color = CharField(blank=True, null=True)
     tags = models.ManyToManyField('Tag')
@@ -95,10 +103,11 @@ class UploadedFile(models.Model):
                     self.file.storage = RawMediaCloudinaryStorage()
 
         super().save(*args, **kwargs)
-    
+
         if not self.cloudinary_public_id and hasattr(self.file, 'public_id'):
             self.cloudinary_public_id = self.file.public_id
             super().save(update_fields=['cloudinary_public_id'])
+
 
     def __str__(self):
         return self.title

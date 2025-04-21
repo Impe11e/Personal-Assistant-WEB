@@ -1,12 +1,25 @@
-{% extends "pers_assist_app/base.html" %}
-
-{% block content %}
-
-<h2>Are you sure you want to delete document "<b>{{ document.title }}</b>"?</h2>
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-    <a href="{% url 'pers_assist_app:documents' %}">Cancel</a>
-</form>
-
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Document Delete Confirm</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/create_forms_style.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
 {% endblock %}
+
+<body>
+{% block content %}
+<div class="main-container">
+
+    <div class="form">
+        <h2>Are you sure you want to delete document "<b>{{ document.title }}</b>"?</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="reg-button">Delete</button>
+            <a href="{% url 'pers_assist_app:documents' %}" style="color: rgb(173, 84, 111); margin-top: 15px;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+</body>

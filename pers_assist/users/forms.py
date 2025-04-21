@@ -4,12 +4,12 @@ from django.contrib.auth.models import User
 
 
 class RegisterForm(UserCreationForm):
-    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    email = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'input'}))
+    email = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'input'}))
     password1 = forms.CharField(max_length=50, required=True,
-                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+                                widget=forms.PasswordInput(attrs={'class': 'input'}))
     password2 = forms.CharField(max_length=50, required=True,
-                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+                                widget=forms.PasswordInput(attrs={'class': 'input'}))
 
     class Meta:
         model = User
@@ -17,8 +17,9 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'input'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input'}))
 
     class Meta:
         model = User

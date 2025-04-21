@@ -1,17 +1,29 @@
-{% extends "pers_assist_app/base.html" %}
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Create Tag</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/create_forms_style.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+{% endblock %}
 
+<body>
 {% block content %}
+    <div class="main-container">
+        <div class="form">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label>Tag name</label>
+                {{ form.tag_name }}
 
-<form method="post">
-    {% csrf_token %}
+                <div>
+                    {{ form.errors }}
+                </div>
 
-    <div>
-        {{ form.tag_name.label_tag }}
-        {{ form.tag_name }}
-        {{ form.tag_name.errors }}
+                <button class="reg-button" type="submit">Create!</button>
+            </form>
+        </div>
     </div>
-
-    <button type="submit">Создать тег</button>
-</form>
-
+</body>
 {% endblock %}
