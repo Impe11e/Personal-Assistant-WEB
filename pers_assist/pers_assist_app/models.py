@@ -12,11 +12,19 @@ class Contact(models.Model):
     name = models.CharField(max_length=50, null=False)
     surname = models.CharField(max_length=150, blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
-    phone = PhoneNumberField(unique=True)
+    phone = PhoneNumberField(unique=False)
     email = models.EmailField(blank=True, null=True, unique=False)
     birthday = models.DateField(blank=True, null=True)
     description = models.CharField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['owner', 'phone'], 
+                name='unique_owner_phone'
+            )
+        ]
 
     def __str__(self):
         return self.name

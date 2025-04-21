@@ -46,7 +46,7 @@ def contact_create(request):
     back_url = reverse('pers_assist_app:contacts')
 
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = ContactForm(request.POST, user=request.user)
         if form.is_valid():
             contact = form.save(commit=False)
             contact.owner = request.user
@@ -55,8 +55,8 @@ def contact_create(request):
         else:
             return render(request, 'pers_assist_app/contact_create.html', {'form': form, 'back_url': back_url})
 
-    return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(), 'back_url': back_url})
-
+    return render(request, 'pers_assist_app/contact_create.html', {'form': ContactForm(user=request.user), 'back_url': back_url})
+    
 
 @login_required(login_url='/signin/')
 def contact_detail(request, contact_id):
@@ -81,15 +81,15 @@ def contact_edit(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id, owner=request.user)
     
     if request.method == 'POST':
-        form = ContactEditForm(request.POST, instance=contact)
+        form = ContactEditForm(request.POST, instance=contact, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('pers_assist_app:contact_detail', contact_id=contact.id)
     else:
-        form = ContactEditForm(instance=contact)
+        form = ContactEditForm(instance=contact, user=request.user)
 
     return render(request, 'pers_assist_app/contact_edit.html', {'form': form, 'contact': contact, 'back_url': back_url})
-
+    
 
 @login_required(login_url='/signin/')
 def search_contacts(request):

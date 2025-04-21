@@ -15,6 +15,23 @@ class ContactForm(ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'surname', 'address', 'phone', 'email', 'birthday', 'description']
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(ContactForm, self).__init__(*args, **kwargs)
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        user = self.user
+        
+        if user and phone:
+            if Contact.objects.filter(owner=user, phone=phone).exists():
+                raise forms.ValidationError("Contact with this phone number is already exists")
+        
+        return phone
 
 
 class ContactEditForm(forms.ModelForm):
@@ -29,10 +46,28 @@ class ContactEditForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'surname', 'address', 'phone', 'email', 'birthday', 'description']
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'})
+        }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['birthday'].widget = DateInput(attrs={'class': 'input', 'type': 'date'})
+        self.user = kwargs.pop('user', None)
+        super(ContactEditForm, self).__init__(*args, **kwargs)
+        self.instance_id = self.instance.id if self.instance and self.instance.id else None
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        user = self.user
+        
+        if user and phone:
+            existing_contacts = Contact.objects.filter(owner=user, phone=phone)
+            
+            if self.instance_id:
+                existing_contacts = existing_contacts.exclude(id=self.instance_id)
+                
+            if existing_contacts.exists():
+                raise forms.ValidationError("Contact with this phone number is already exists.")
+        
 
 
 # NOTES
