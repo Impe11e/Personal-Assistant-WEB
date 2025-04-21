@@ -28,7 +28,9 @@
                 <label>Password 2 </label>
                 {{ form.password2 }}
 
-                {{form.errors}}
+                <div>
+                    {{ form.errors }}
+                </div>
 
                 <a href="{% url 'users:signin' %}">Allready have accaunt?</a>
 

@@ -22,7 +22,9 @@
                 <label>Password</label>
                 {{ form.password }}
 
-                {{form.errors}}
+                <div>
+                    {{ form.errors }}
+                </div>
 
                 <a href="{% url 'users:signup' %}">Haven't an accaunt yet? Lets create now!</a>
                 <a href="{% url 'users:password_reset' %}">Forgot password?</a>

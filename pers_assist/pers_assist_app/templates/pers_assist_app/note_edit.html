@@ -28,6 +28,10 @@
                 <label>Tags</label>
                 {{ form.tags }}
 
+                <div>
+                    {{ form.errors }}
+                </div>
+
                 <a class="more-tags" href="{% url 'pers_assist_app:tag_create' %}">Need more tags?</a>
 
                 <button class="reg-button" type="submit">Update!</button>
