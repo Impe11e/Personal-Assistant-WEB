@@ -36,13 +36,25 @@ class ContactForm(ModelForm):
 
 
 class ContactEditForm(forms.ModelForm):
-    phone = PhoneNumberField(required=True, widget=forms.TextInput(attrs={'placeholder': '+380XXXXXXXXX'}))
-    
+    name = CharField(min_length=2, max_length=50, required=True,
+                     widget=TextInput(attrs={'class': 'input', 'placeholder': 'John'}))
+    surname = CharField(min_length=2, max_length=100, required=False,
+                        widget=TextInput(attrs={'class': 'input', 'placeholder': 'Johnson'}))
+    address = CharField(max_length=150, required=False,
+                        widget=TextInput(attrs={'class': 'input', 'placeholder': 'Ukraine, Kyiv, Svobody av.'}))
+    phone = PhoneNumberField(max_length=20, required=True,
+                             widget=TextInput(attrs={'class': 'input', 'placeholder': '+380991234567'}))
+    email = EmailField(required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'exapmle@gmail.com'}))
+    birthday = DateField(required=False,
+                         widget=DateInput(attrs={'class': 'input', 'type': 'date', 'placeholder': 'YYYY-MM-DD'}))
+    description = CharField(max_length=500, required=False,
+                            widget=TextInput(attrs={'class': 'input', 'placeholder': 'My old classmate'}))
+
     class Meta:
         model = Contact
         fields = ['name', 'surname', 'address', 'phone', 'email', 'birthday', 'description']
         widgets = {
-            'birthday': forms.DateInput(attrs={'type': 'date'})
+            'birthday': forms.DateInput(attrs={'type': 'date', 'class': 'input'})
         }
     
     def __init__(self, *args, **kwargs):

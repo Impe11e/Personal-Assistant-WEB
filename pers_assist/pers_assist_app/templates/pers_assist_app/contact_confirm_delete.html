@@ -1,12 +1,24 @@
-{% extends "pers_assist_app/base.html" %}
+{% extends 'pers_assist_app/base.html' %}
 
-{% block content %}
-
-<h2>Are you sure you want to delete contact {{ contact.name }}?</h2>
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-    <a href="{% url 'pers_assist_app:contacts' %}">Cancel</a>
-</form>
-
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Create Contact</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/create_forms_style.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/forms_style.css' %}">
 {% endblock %}
+
+<body>
+{% block content %}
+<div class="form">
+    <form method="POST">
+        <h2>Are you sure you want to delete contact {{ contact.name }}?</h2>
+        {% csrf_token %}
+        <button class='reg-button' type="submit">Delete</button>
+        <a class='kyky' href="{% url 'pers_assist_app:contacts' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+</body>
