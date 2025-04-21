@@ -81,10 +81,27 @@ def contact_edit(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id, owner=request.user)
     
     if request.method == 'POST':
+        print(f"POST data: {request.POST}")
+        print(f"Phone from POST: {request.POST.get('phone')}")
+        
         form = ContactEditForm(request.POST, instance=contact, user=request.user)
+        
+        print(f"Raw phone from POST: {request.POST.get('phone')}")
+        
         if form.is_valid():
-            form.save()
-            return redirect('pers_assist_app:contact_detail', contact_id=contact.id)
+            print(f"Form is valid, phone: {form.cleaned_data.get('phone')}")
+            try:
+                print(f"Validated phone: {form.cleaned_data.get('phone')}")
+                
+                contact = form.save(commit=False)
+                contact.phone = form.cleaned_data['phone']
+                print(f"Before save, phone: {contact.phone}")
+                contact.save()
+                return redirect('pers_assist_app:contact_detail', contact_id=contact.id)
+            except Exception as e:
+                print(f"Error saving form: {type(e)}: {str(e)}")
+        else:
+            print(f"Form errors: {form.errors}")
     else:
         form = ContactEditForm(instance=contact, user=request.user)
 

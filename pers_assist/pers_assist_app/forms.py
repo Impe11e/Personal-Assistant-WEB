@@ -1,13 +1,14 @@
 from django.forms import ModelForm, CharField, TextInput, DateInput, EmailField, DateField, Textarea
 from .models import Contact, UploadedFile, Note, Tag
 from django import forms
+from phonenumber_field.formfields import PhoneNumberField
 
 
 class ContactForm(ModelForm):
     name = CharField(min_length=2, max_length=50, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': 'John'}))
     surname = CharField(min_length=2, max_length=100, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Johnson'}))
     address = CharField(max_length=150, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Ukraine, Kyiv, Svobody av.'}))
-    phone = CharField(max_length=20, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': '+380991234567'}))
+    phone = PhoneNumberField(max_length=20, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': '+380991234567'}))
     email = EmailField(required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'exapmle@gmail.com'}))
     birthday = DateField(required=False, widget=DateInput(attrs={'class': 'input', 'type': 'date', 'placeholder': 'YYYY-MM-DD'}))
     description = CharField(max_length=500, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'My old classmate'}))
@@ -35,39 +36,38 @@ class ContactForm(ModelForm):
 
 
 class ContactEditForm(forms.ModelForm):
-    name = CharField(min_length=2, max_length=50, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': 'John'}))
-    surname = CharField(min_length=2, max_length=100, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Johnson'}))
-    address = CharField(max_length=150, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'Ukraine, Kyiv, Svobody av.'}))
-    phone = CharField(max_length=20, required=True, widget=TextInput(attrs={'class': 'input', 'placeholder': '+380991234567'}))
-    email = EmailField(required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'exapmle@gmail.com'}))
-    birthday = DateField(required=False, widget=DateInput(attrs={'class': 'input', 'type': 'date', 'placeholder': 'YYYY-MM-DD'}))
-    description = CharField(max_length=500, required=False, widget=TextInput(attrs={'class': 'input', 'placeholder': 'My old classmate'}))
-
+    phone = PhoneNumberField(required=True, widget=forms.TextInput(attrs={'placeholder': '+380XXXXXXXXX'}))
+    
     class Meta:
         model = Contact
         fields = ['name', 'surname', 'address', 'phone', 'email', 'birthday', 'description']
         widgets = {
             'birthday': forms.DateInput(attrs={'type': 'date'})
         }
-
+    
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(ContactEditForm, self).__init__(*args, **kwargs)
-        self.instance_id = self.instance.id if self.instance and self.instance.id else None
-
+        if self.instance and self.instance.phone:
+            self.initial['phone'] = self.instance.phone
+    
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
-        user = self.user
+        print(f"Clean phone value: {phone}, type: {type(phone)}")
         
-        if user and phone:
-            existing_contacts = Contact.objects.filter(owner=user, phone=phone)
+        if not phone:
+            raise forms.ValidationError("Phone number field cannot be null")
             
-            if self.instance_id:
-                existing_contacts = existing_contacts.exclude(id=self.instance_id)
-                
-            if existing_contacts.exists():
-                raise forms.ValidationError("Contact with this phone number is already exists.")
+        if self.user:
+            existing = Contact.objects.filter(
+                owner=self.user, 
+                phone=phone
+            ).exclude(pk=self.instance.pk if self.instance else None)
+            
+            if existing.exists():
+                raise forms.ValidationError("Contact with this phone number is already exists")
         
+        return phone
 
 
 # NOTES

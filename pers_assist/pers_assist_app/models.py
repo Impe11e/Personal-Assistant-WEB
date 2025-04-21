@@ -2,7 +2,7 @@ from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CharField, TextField
-from django.utils.text import slugify
+from slugify import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from cloudinary_storage.storage import MediaCloudinaryStorage, RawMediaCloudinaryStorage
 
@@ -34,7 +34,7 @@ class Contact(models.Model):
 class Note(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes', null=True)
     title = CharField(max_length=100, blank=True, null=False)
-    text = TextField(blank=True, null=True)  # like just for reminders, where we dont need more text than title
+    text = TextField(blank=True, null=True)
 
     color = CharField(blank=True, null=True)
     tags = models.ManyToManyField('Tag')

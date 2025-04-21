@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     "widget_tweaks",
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
