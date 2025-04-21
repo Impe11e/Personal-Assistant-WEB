@@ -54,7 +54,7 @@ class NoteCreateForm(ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'choice my-select'}),
         required=False
     )
 
@@ -89,7 +89,7 @@ class NoteEditForm(ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'choice my-select'}),
         required=False
     )
 
