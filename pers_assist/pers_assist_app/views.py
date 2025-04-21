@@ -122,19 +122,12 @@ def search_birthdays(request):
     upcoming_dates = [(today + timedelta(days=i)) for i in range(days_ahead + 1)]
     upcoming_month_day = [(d.month, d.day) for d in upcoming_dates]
 
-    contacts = Contact.objects.exclude(birthday=None)
+    contacts = Contact.objects.exclude(birthday=None).filter(owner=request.user)
     birthday_contacts = []
 
     for contact in contacts:
         if (contact.birthday.month, contact.birthday.day) in upcoming_month_day:
             birthday_contacts.append(contact)
-
-    upcoming_birthday_contacts = Contact.objects.filter(
-        birthday__gte=today,
-        birthday__lte=upcoming_dates,
-        owner=request.user
-    ).exclude(birthday=None)
-
 
     return render(request, 'pers_assist_app/contacts.html', {
         'contacts': birthday_contacts,
