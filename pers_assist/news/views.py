@@ -69,5 +69,5 @@ def news_view(request):
         ]
     }
 
-    return render(request, 'news/index2.html',
+    return render(request, 'news/index.html',
                   context={'page_title': 'News and Statistics', 'data': view_data})

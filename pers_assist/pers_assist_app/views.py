@@ -37,7 +37,7 @@ def documents(request):
         'categories': dict(UploadedFile.CATEGORY_CHOICES)
     }
 
-    return render(request, 'pers_assist_app/documents2.html', context)
+    return render(request, 'pers_assist_app/documents.html', context)
 
 
 # CONTACTS

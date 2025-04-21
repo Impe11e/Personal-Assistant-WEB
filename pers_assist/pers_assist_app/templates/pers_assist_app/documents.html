@@ -1,45 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Documents</title>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
-</head>
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Documents</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/forms_style.css' %}">
+{% endblock %}
+
 <body>
-<main class="container">
+{% block content %}
+    <div class="section-title">
+        <h5>Documents</h5>
+    </div>
 
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-            <li><a href="{% url 'pers_assist_app:main' %}" role="button" class="secondary" style="flex-shrink: 0; width: 130px;">Main menu</a></li>
-            <li><a href="{% url 'pers_assist_app:upload_document' %}" role="button">Upload document</a></li>
-        </ul>
-    </nav>
+    <div class="all-items">
+        <!-- ITEM TYPE 1 -->
+        <div class="item-type">
+            <div class="item-on-page-block">
+                <div class="item-photo">
+                    <div>
+                        <h1>Search documents</h1>
+                        <form class="form" method="GET">
+                            <div class="form-inner-block">
+                                <label>Enter contact name</label>
+                                <div class="search-row">
+                                    <select class="input my-select" name="category" id="category" onchange="this.form.submit()">
+                                        <option value="">All Categories</option>
+                                        {% for key, name in categories.items %}
+                                            <option value="{{ key }}" {% if selected_category == key %}selected{% endif %}>{{ name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+<!--                                <button class="submit-button" type="submit">Search</button>-->
+                            </div>
+                        </form>
+                    </div>
 
-    <form method="get" style="margin-bottom: 30px;">
-        <label for="category">Filter by category:</label>
-        <select name="category" id="category" onchange="this.form.submit()">
-            <option value="">All Categories</option>
-            {% for key, name in categories.items %}
-                <option value="{{ key }}" {% if selected_category == key %}selected{% endif %}>{{ name }}</option>
-            {% endfor %}
-        </select>
-    </form>
+                    <div>
+                        <a class="new-note" href="{% url 'pers_assist_app:upload_document' %}">Upload new document</a>
+                    </div>
+                </div>
 
-    {% if documents %}
-        {% for document in documents %}
-            <ul>
-                <li>
-                    <a href="{% url 'pers_assist_app:document_download' document.id %}" class="button" role="button">
-                        <b>{{ document.title }}</b> <small>({{ document.get_category_display }})</small>
-                    </a>
-                    <a href="{% url 'pers_assist_app:document_delete' document.id %}" role="button" class="outline">Delete</a>
-                </li>
-            </ul>
-        {% endfor %}
-    {% else %}
-        <p>No documents found.</p>
-    {% endif %}
 
-</main>
+                <div class="item-info">
+                    <div class="inner">
+                        <h1>My Documents</h1>
+                        <div class="contact-list">
+                            {% if documents %}
+                                {% for document in documents %}
+                                    <ul>
+                                        <li>
+                                            <div href="" class="note red-note">
+                                                <a href="{% url 'pers_assist_app:document_download' document.id %}" class="note-details" role="button">
+                                                    <b>{{ document.title }}</b> <small>({{ document.get_category_display }})</small>
+                                                </a>
+                                                <a href="{% url 'pers_assist_app:document_delete' document.id %}" role="button" class="tag-actions-button"><svg fill="none" height="16" stroke-width="1.5" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 11V20.4C19 20.7314 18.7314 21 18.4 21H5.6C5.26863 21 5 20.7314 5 20.4V11" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17V11" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 17V11" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7L16 7M3 7L8 7M8 7V3.6C8 3.26863 8.26863 3 8.6 3L15.4 3C15.7314 3 16 3.26863 16 3.6V7M8 7L16 7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                {% endfor %}
+                            {% else %}
+                                <p>No documents found.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 </body>
 </html>

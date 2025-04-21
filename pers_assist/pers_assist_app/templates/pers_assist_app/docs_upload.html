@@ -1,12 +1,29 @@
-{% extends "pers_assist_app/base.html" %}
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidly | Document Upload</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/create_forms_style.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+{% endblock %}
 
+<body>
 {% block content %}
-
-<h1>Upload File</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
+    <div class="main-container">
+        <div class="form">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load widget_tweaks %}
+                {% for field in form %}
+                    <label style="margin-bottom: 10px">
+                        {{ field.label_tag }}
+                    </label>
+                    {{ field|add_class:"input" }}
+                {% endfor %}
+                <button class="reg-button" type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

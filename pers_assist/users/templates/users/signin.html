@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'pers_assist_app/base.html' %}
+{% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Assistant | Sign in</title>
-    {% block extra_css %}
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
-        <link rel="stylesheet" href="{% static 'pers_assist_app/signup.css' %}">
-    {% endblock %}
-    <link rel="icon" href="images/kof_logo.ico" type="image/x-icon">
-</head>
+    <title>Aidly | Sign in</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pers_assist_app/notes.css' %}">
+    <link rel="stylesheet" href="{% static 'pers_assist_app/signup.css' %}">
+{% endblock %}
+
 <body>
-    <header>
-        <div class="logo-container">
-            <img src="images/kof_logo.png" onclick='location.href="main.html"'>
-        </div>
-        <div class="cart-container">
-            <a href="cart.html"><img src="images/cart.png"></a>
-        </div>
-    </header>
+{% block content %}
 
     <div class="main-container">
         <div class="form">
@@ -44,4 +34,5 @@
 
     <script src="swiper.js"></script>
     <script src="jabascript_main.js"></script>
+{% endblock %}
 </body>
