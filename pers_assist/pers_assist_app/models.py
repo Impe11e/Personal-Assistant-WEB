@@ -80,7 +80,15 @@ class UploadedFile(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             if not self.category or self.category == 'other':
-                extension = self.file.name.split('.')[-1].lower()
+                try:
+                    file_parts = self.file.name.split('.')
+                    if len(file_parts) > 1:
+                        extension = file_parts[-1].lower()
+                    else:
+                        extension = ""
+                except (AttributeError, IndexError):
+                    extension = ""
+                    
                 if extension in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']:
                     self.category = 'image'
                     self.file.storage = MediaCloudinaryStorage()

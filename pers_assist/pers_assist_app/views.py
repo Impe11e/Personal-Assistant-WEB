@@ -290,7 +290,7 @@ def document_delete(request, document_id):
             cloudinary.uploader.destroy(document.file.public_id, invalidate=True)
         except Exception as e:
             print(f"An error occurred while deleting from Cloudinary: {e}")
-        
+
         document.delete()
         return redirect('pers_assist_app:documents')
 
@@ -298,10 +298,3 @@ def document_delete(request, document_id):
         "document": document,
         "back_url": back_url
     })
-
-    if request.method == 'POST':
-        document.delete()
-        return redirect('pers_assist_app:documents')
-
-    return render(request, 'pers_assist_app/document_confirm_delete.html', {"document": document, "back_url": back_url})
-
